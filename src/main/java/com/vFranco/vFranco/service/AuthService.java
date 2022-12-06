@@ -1,9 +1,13 @@
-package com.vFranco.vFranco.service;
+/* package com.vFranco.vFranco.service;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.vFranco.vFranco.entity.UsuarioEntity;
+import com.vFranco.vFranco.exception.UnauthorizedException;
+import com.vFranco.vFranco.repository.UsuarioRepository;
 
 @Service
 public class AuthService {
@@ -12,13 +16,13 @@ public class AuthService {
     private HttpServletRequest oRequest;
 
     @Autowired
-    UserRepository oUserRepository;
+    UsuarioRepository oUsuarioRepository;
 
-    public String login(@RequestBody UserBean oUserBean) {
-        if (oUserBean.getPassword() != null) {
-            UserEntity oUserEntity = oUserRepository.findByUsernameAndPassword(oUserBean.getUsername(), oUserBean.getPassword());
-            if (oUserEntity != null) {
-                return JwtHelper.generateJWT(oUserBean.getUsername());
+    public String login(@RequestBody UsuarioBean oUsuarioBean) {
+        if (oUsuarioBean.getPassword() != null) {
+            UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByUsuarionameAndPassword(oUsuarioBean.getUsuarioname(), oUsuarioBean.getPassword());
+            if (oUsuarioEntity != null) {
+                return JwtHelper.generateJWT(oUsuarioBean.getUsuarioname());
             } else {
                 throw new UnauthorizedException("login or password incorrect");
             }
@@ -27,20 +31,20 @@ public class AuthService {
         }
     }
 
-    public UserEntity check() {
-        String strUserName = (String) oRequest.getAttribute("User");
-        if (strUserName != null) {
-            UserEntity oUserEntity = oUserRepository.findByUsername(strUserName);
-            return oUserEntity;
+    public UsuarioEntity check() {
+        String strUsuarioName = (String) oRequest.getAttribute("Usuario");
+        if (strUsuarioName != null) {
+            UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByUsuarioname(strUsuarioName);
+            return oUsuarioEntity;
         } else {
             throw new UnauthorizedException("No active session");
         }
     }
 
     public boolean isAdmin() {
-        UserEntity oUserSessionEntity = oUserRepository.findByUsername((String)  oRequest.getAttribute("User"));
-        if (oUserSessionEntity != null) {
-            if (oUserSessionEntity.getUsertype().getId().equals(UsertypeHelper.ADMIN.getUsertype())) {
+        UsuarioEntity oUsuarioSessionEntity = oUsuarioRepository.findByUsuarioname((String)  oRequest.getAttribute("Usuario"));
+        if (oUsuarioSessionEntity != null) {
+            if (oUsuarioSessionEntity.getUsuariotype().getId().equals(UsuariotypeHelper.ADMIN.getUsuariotype())) {
                 return true;
             }
         }
@@ -48,11 +52,11 @@ public class AuthService {
     }
 
     public void OnlyAdmins() {
-        UserEntity oUserSessionEntity = oUserRepository.findByUsername((String)  oRequest.getAttribute("User"));
-        if (oUserSessionEntity == null) {
+        UsuarioEntity oUsuarioSessionEntity = oUsuarioRepository.findByUsuarioname((String)  oRequest.getAttribute("Usuario"));
+        if (oUsuarioSessionEntity == null) {
             throw new UnauthorizedException("this request is only allowed to admin role");
         } else {
-            if (!oUserSessionEntity.getUsertype().getId().equals(UsertypeHelper.ADMIN.getUsertype())) {
+            if (!oUsuarioSessionEntity.getUsuariotype().getId().equals(UsuariotypeHelper.ADMIN.getUsuariotype())) {
                 throw new UnauthorizedException("this request is only allowed to admin role");
             }
         }
@@ -123,5 +127,6 @@ public class AuthService {
         }
     }
 
-     */
-}
+     
+}*/
+ 

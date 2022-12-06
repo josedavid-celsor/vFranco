@@ -30,7 +30,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.vFranco.vFranco.bean;
+/* package com.vFranco.vFranco.bean;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -60,3 +60,4 @@ public class UsuarioBean {
     }
 
 }
+ */
