@@ -23,11 +23,14 @@ public class AuthoritysEntity {
     @Column(name = "nombre")
     String nombre;
 
-    @OneToMany(mappedBy = "authoritys", fetch = FetchType.LAZY)
-    private final List<UsuarioEntity> usuarios;
+    @OneToMany(mappedBy = "authority")
+    private List<UsuarioEntity> usuarios;
+
+
+    public AuthoritysEntity() {
+    }
 
     public AuthoritysEntity(Long id, String nombre) {
-        this.usuarios = new ArrayList<>();
         this.id = id;
         this.nombre = nombre;
     }
@@ -48,8 +51,6 @@ public class AuthoritysEntity {
         this.nombre = nombre;
     }
 
-    public int getUsuarios() {
-        return usuarios.size();
-    }
+
     
 }

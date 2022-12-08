@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import com.vFranco.vFranco.service.AuthService;
 
 
 @RestController
+@Controller
 @RequestMapping("/Auth")
 public class AuthConttroller {
 
@@ -30,6 +32,7 @@ public class AuthConttroller {
     private JwtProvider jwtProvider;
     @PostMapping("/token")
     public ResponseEntity<String> generateToken(@RequestBody LoginRequest loginRequest){
+        System.out.println("XDDD");
         return ResponseEntity.ok(authService.login(loginRequest));
     }
 

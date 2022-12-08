@@ -52,12 +52,15 @@ public class UsuarioEntity {
 
     
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idAuthoritys")
-    private AuthoritysEntity authoritys;
+    @ManyToOne
+    @JoinColumn(name = "authority_id")
+    AuthoritysEntity authority;
+
+    public UsuarioEntity() {
+    }
 
     public UsuarioEntity(Long id, String dni, String nombre, String apellido, String apellido2, String email,
-            String username, String password, String token, AuthoritysEntity authoritys) {
+                         String username, String password, String token, AuthoritysEntity authority) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
@@ -67,7 +70,7 @@ public class UsuarioEntity {
         this.username = username;
         this.password = password;
         this.token = token;
-        this.authoritys = authoritys;
+        this.authority = authority;
     }
 
 
@@ -76,7 +79,7 @@ public class UsuarioEntity {
         this.username = username;
         this.password = password;
 
-        this.authoritys = authoritys;
+        this.authority = authoritys;
     }
 
     public Long getId() {
@@ -104,11 +107,11 @@ public class UsuarioEntity {
     }
 
     public AuthoritysEntity getAuthoritys() {
-        return authoritys;
+        return authority;
     }
 
     public void setAuthoritys(AuthoritysEntity authoritys) {
-        this.authoritys = authoritys;
+        this.authority = authoritys;
     }
     
     public String getDni() {

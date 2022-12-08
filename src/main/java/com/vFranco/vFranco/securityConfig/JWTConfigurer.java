@@ -7,10 +7,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.vFranco.vFranco.filter.JWTFilter;
 import com.vFranco.vFranco.provider.JwtProvider;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JWTConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
     
     private final JwtProvider jwtProvider;
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
   
     public JWTConfigurer(JwtProvider jwtProvider) {
       this.jwtProvider = jwtProvider;
