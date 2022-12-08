@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vFranco.vFranco.classes.LoginRequest;
 import com.vFranco.vFranco.provider.JwtProvider;
+import com.vFranco.vFranco.service.AuthService;
+
 
 
 @RestController
@@ -22,17 +24,13 @@ import com.vFranco.vFranco.provider.JwtProvider;
 public class AuthConttroller {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthService authService;
 
     @Autowired
     private JwtProvider jwtProvider;
     @PostMapping("/token")
     public ResponseEntity<String> generateToken(@RequestBody LoginRequest loginRequest){
-        Authentication authentication = authenticationManager.authenticate
-                                            (new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jsonWebToken =jwtProvider.generateJwt(authentication);
-    return ResponseEntity.ok(jsonWebToken);
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     @GetMapping("/verify")
