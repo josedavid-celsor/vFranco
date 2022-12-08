@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 05-12-2022 a las 19:38:19
+-- Tiempo de generación: 08-12-2022 a las 13:21:40
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -20,6 +20,17 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `vfranco`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `authoritys`
+--
+
+CREATE TABLE `authoritys` (
+  `id` bigint(20) NOT NULL,
+  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -92,17 +103,6 @@ CREATE TABLE `tipoproducto` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipousuario`
---
-
-CREATE TABLE `tipousuario` (
-  `id` bigint(20) NOT NULL,
-  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `usuario`
 --
 
@@ -112,17 +112,22 @@ CREATE TABLE `usuario` (
   `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `apellido` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `apellido2` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `login` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `idTipoUsuario` bigint(20) NOT NULL,
   `token` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `validado` tinyint(1) NOT NULL
+  `idAuthoritys` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `authoritys`
+--
+ALTER TABLE `authoritys`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `carrito`
@@ -155,12 +160,6 @@ ALTER TABLE `tipoproducto`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `tipousuario`
---
-ALTER TABLE `tipousuario`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -169,6 +168,12 @@ ALTER TABLE `usuario`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `authoritys`
+--
+ALTER TABLE `authoritys`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `carrito`
@@ -198,12 +203,6 @@ ALTER TABLE `producto`
 -- AUTO_INCREMENT de la tabla `tipoproducto`
 --
 ALTER TABLE `tipoproducto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `tipousuario`
---
-ALTER TABLE `tipousuario`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
