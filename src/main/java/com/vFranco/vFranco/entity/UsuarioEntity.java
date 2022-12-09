@@ -170,4 +170,21 @@ public class UsuarioEntity {
     public void setToken(String token) {
         this.token = token;
     }
+
+
+    public AuthoritysEntity getAuthority() {
+        return authority;
+    }
+
+
+    public void setAuthority(AuthoritysEntity authority) {
+        this.authority = authority;
+    }
+
+
+    public List<CarritoEntity> getCarritos() {
+        return carritos;
+    }
+
+    
 }

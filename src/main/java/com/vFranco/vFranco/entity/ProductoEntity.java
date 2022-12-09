@@ -40,10 +40,15 @@ public class ProductoEntity {
     @OneToMany(mappedBy = "producto")
     private final List<CarritoEntity> carritos;
 
+
+    @OneToMany(mappedBy = "producto")
+    private final List<CompraEntity> compras;
+   
+
    
 
     public ProductoEntity(Long id, String codigo, String nombre, int cantidad, double precio,
-            TipoProductoEntity idTipoProducto, List<CarritoEntity> carritos) {
+            TipoProductoEntity idTipoProducto, List<CarritoEntity> carritos, List<CompraEntity> compras) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -51,6 +56,7 @@ public class ProductoEntity {
         this.precio = precio;
         this.idTipoProducto = idTipoProducto;
         this.carritos = carritos;
+        this.compras = compras;
     }
 
     public Long getId() {
@@ -103,6 +109,10 @@ public class ProductoEntity {
 
     public List<CarritoEntity> getCarritos() {
         return carritos;
+    }
+
+    public List<CompraEntity> getCompras() {
+        return compras;
     }
 
     
