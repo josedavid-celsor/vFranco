@@ -1,18 +1,19 @@
 package com.vFranco.vFranco.entity;
 
-import java.util.Collection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,44 +24,49 @@ public class UsuarioEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     
     @Column(name = "dni")
-    String dni;
+    private String dni;
 
     @Column(name = "nombre")
-    String nombre;
+    private String nombre;
 
     @Column(name = "apellido")
-    String apellido;
+    private String apellido;
 
     @Column(name = "apellido2")
-    String apellido2;
+    private String apellido2;
 
     @Column(name = "email")
-    String email;
+    private String email;
 
     @Column(name = "username")
-    String username;
+    private String username;
 
     @Column(name = "password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String password;
+    private String password;
 
     @Column(name = "token")
-    String token;
+    private String token;
 
     
     
     @ManyToOne
     @JoinColumn(name = "authority_id")
-    AuthoritysEntity authority;
+    private AuthoritysEntity authority;
+
+    @OneToMany(mappedBy = "usuario")
+    private final List<CarritoEntity> carritos;
 
     public UsuarioEntity() {
+        this.carritos = new ArrayList<>();
     }
 
+   
     public UsuarioEntity(Long id, String dni, String nombre, String apellido, String apellido2, String email,
-                         String username, String password, String token, AuthoritysEntity authority) {
+            String username, String password, String token, AuthoritysEntity authority, List<CarritoEntity> carritos) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
@@ -71,14 +77,17 @@ public class UsuarioEntity {
         this.password = password;
         this.token = token;
         this.authority = authority;
+        this.carritos = carritos;
     }
+
+
 
 
     public UsuarioEntity(Long id, String username, String password, AuthoritysEntity authoritys) {
         this.id = id;
         this.username = username;
         this.password = password;
-
+        this.carritos = new ArrayList<>();
         this.authority = authoritys;
     }
 

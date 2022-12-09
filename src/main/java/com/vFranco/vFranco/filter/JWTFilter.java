@@ -30,14 +30,14 @@ public class JWTFilter extends OncePerRequestFilter {
   
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("XDDD");
+        /* System.out.println("XDDD"); */
         String jwt = resolveToken(request);
         if (jwt != null) {
             // If a JWT token was found, try to authenticate the user using the token
             Authentication authentication = jwtProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        System.out.println("XDD222D");
+       /*  System.out.println("XDD222D"); */
         // Continue with the request
         filterChain.doFilter(request, response);
 

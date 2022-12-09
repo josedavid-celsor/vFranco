@@ -10,10 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="authoritys")
-public class AuthoritysEntity {
 
+@Entity
+@Table(name="tipoproducto")
+public class TipoProductoEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,16 +22,13 @@ public class AuthoritysEntity {
     @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "authority")
-    private List<UsuarioEntity> usuarios;
+    @OneToMany(mappedBy = "tipoProducto")
+    private List<ProductoEntity> productos;
 
-
-    public AuthoritysEntity() {
-    }
-
-    public AuthoritysEntity(Long id, String nombre) {
+    public TipoProductoEntity(Long id, String nombre, List<ProductoEntity> productos) {
         this.id = id;
         this.nombre = nombre;
+        this.productos = productos;
     }
 
     public Long getId() {
@@ -49,6 +47,13 @@ public class AuthoritysEntity {
         this.nombre = nombre;
     }
 
+    public List<ProductoEntity> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<ProductoEntity> productos) {
+        this.productos = productos;
+    }
 
     
 }
