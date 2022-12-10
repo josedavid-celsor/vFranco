@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,25 +30,6 @@ public class FacturaEntity {
 
     @Column(name = "pagado")
     private boolean pagado;
-
-    @ManyToOne
-    @JoinColumn(name = "idUsuario")
-    private UsuarioEntity usuario;
-
-    @OneToMany(mappedBy = "producto")
-    private final List<CompraEntity> compras;
-
-    
-
-    public FacturaEntity(Long id, LocalDateTime fecha, int iva, boolean pagado, UsuarioEntity usuario,
-            List<CompraEntity> compras) {
-        this.id = id;
-        this.fecha = fecha;
-        this.iva = iva;
-        this.pagado = pagado;
-        this.usuario = usuario;
-        this.compras = compras;
-    }
 
     public Long getId() {
         return id;
@@ -81,17 +63,10 @@ public class FacturaEntity {
         this.pagado = pagado;
     }
 
-    public UsuarioEntity getUsuario() {
-        return usuario;
-    }
+    
+    
+    
 
-    public void setUsuario(UsuarioEntity usuario) {
-        this.usuario = usuario;
-    }
-
-    public List<CompraEntity> getCompras() {
-        return compras;
-    }
 
 
    

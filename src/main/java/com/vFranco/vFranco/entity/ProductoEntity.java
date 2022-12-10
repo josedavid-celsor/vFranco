@@ -1,6 +1,7 @@
 package com.vFranco.vFranco.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,31 +35,12 @@ public class ProductoEntity {
     @Column(name = "precio")
     private double precio;
     
+    @ManyToMany(mappedBy = "productos")
+    private Set<CarritoEntity> carritos;
+
     @ManyToOne
     @JoinColumn(name = "idTipoProducto")
-    private TipoProductoEntity idTipoProducto;
-
-    @OneToMany(mappedBy = "producto")
-    private final List<CarritoEntity> carritos;
-
-
-    @OneToMany(mappedBy = "producto")
-    private final List<CompraEntity> compras;
-   
-
-   
-
-    public ProductoEntity(Long id, String codigo, String nombre, int cantidad, double precio,
-            TipoProductoEntity idTipoProducto, List<CarritoEntity> carritos, List<CompraEntity> compras) {
-        this.id = id;
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.precio = precio;
-        this.idTipoProducto = idTipoProducto;
-        this.carritos = carritos;
-        this.compras = compras;
-    }
+    private TipoProductoEntity tipoProducto;
 
     public Long getId() {
         return id;
@@ -99,22 +82,27 @@ public class ProductoEntity {
         this.precio = precio;
     }
 
-    public TipoProductoEntity getIdTipoProducto() {
-        return idTipoProducto;
-    }
-
-    public void setIdTipoProducto(TipoProductoEntity idTipoProducto) {
-        this.idTipoProducto = idTipoProducto;
-    }
-
-    public List<CarritoEntity> getCarritos() {
+    public Set<CarritoEntity> getCarritos() {
         return carritos;
     }
 
-    public List<CompraEntity> getCompras() {
-        return compras;
+    public void setCarritos(Set<CarritoEntity> carritos) {
+        this.carritos = carritos;
     }
 
-    
+    public TipoProductoEntity getTipoProducto() {
+        return tipoProducto;
+    }
+
+    public void setTipoProducto(TipoProductoEntity tipoProducto) {
+        this.tipoProducto = tipoProducto;
+    }
+
+  
+
+   
+
+   
+
     
 }

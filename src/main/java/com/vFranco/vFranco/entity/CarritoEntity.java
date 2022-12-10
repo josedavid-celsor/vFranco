@@ -1,11 +1,17 @@
 package com.vFranco.vFranco.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,19 +23,17 @@ public class CarritoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int cantidad;
-    private double precio;
-
-    @ManyToOne
-    @JoinColumn(name = "idProducto")
-    private ProductoEntity producto;
-
     @ManyToOne
     @JoinColumn(name = "idUsuario")
     private UsuarioEntity usuario;
 
-    public CarritoEntity() {
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "cartproducts",
+            joinColumns = @JoinColumn(name = "idCarrito"),
+            inverseJoinColumns = @JoinColumn(name = "idProduct")
+    )
+    private Set<ProductoEntity> productos;
 
     public Long getId() {
         return id;
@@ -39,31 +43,6 @@ public class CarritoEntity {
         this.id = id;
     }
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-
-        this.precio = precio;
-    }
-
-    public ProductoEntity getProducto() {
-        return producto;
-    }
-
-    public void setProducto(ProductoEntity producto) {
-        this.producto = producto;
-    }
-
     public UsuarioEntity getUsuario() {
         return usuario;
     }
@@ -71,4 +50,14 @@ public class CarritoEntity {
     public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
+
+    public Set<ProductoEntity> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(Set<ProductoEntity> productos) {
+        this.productos = productos;
+    }
+
+    
 }

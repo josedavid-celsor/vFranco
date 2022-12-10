@@ -17,6 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.vFranco.vFranco.provider.JwtProvider;
 
+
+//Intercepta las peticiones y busca la presencia de un token, en el acso de que no este no deja seguir la aplicación
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 

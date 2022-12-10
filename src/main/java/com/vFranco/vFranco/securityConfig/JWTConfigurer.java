@@ -9,6 +9,7 @@ import com.vFranco.vFranco.filter.JWTFilter;
 import com.vFranco.vFranco.provider.JwtProvider;
 import org.springframework.stereotype.Component;
 
+//Especifica los aspectos del jwt
 @Component
 public class JWTConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
     
@@ -19,7 +20,8 @@ public class JWTConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilt
     public JWTConfigurer(JwtProvider jwtProvider) {
       this.jwtProvider = jwtProvider;
     }
-  
+    
+    //Cuando viene una petición http la manda al filter, según la configuración especificada
     @Override
     public void configure(HttpSecurity http) throws Exception {
       JWTFilter customFilter = new JWTFilter(jwtProvider);

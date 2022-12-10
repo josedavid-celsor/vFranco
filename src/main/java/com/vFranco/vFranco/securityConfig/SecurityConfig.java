@@ -15,6 +15,7 @@ import com.vFranco.vFranco.provider.JwtProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+//Reglas de seguridad que debe seguir el jwt
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -49,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     auth.userDetailsService(authService).passwordEncoder(passwordEncoder());
   }
 
+  //Con este metodo decimos las reglas que debe seguir el http, en este casod ecimos que el Auth/token no debe lelvar token
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
@@ -56,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/Auth/token").permitAll()
+            .antMatchers("/Auth").permitAll()
             .anyRequest().authenticated()
             .and()
             .apply(jwtConfigurer);
