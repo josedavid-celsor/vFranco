@@ -25,6 +25,10 @@ public class TipoProductoEntity {
     @OneToMany(mappedBy = "tipoProducto")
     private List<ProductoEntity> productos;
 
+    public TipoProductoEntity(){
+        
+    }
+
     public TipoProductoEntity(Long id, String nombre, List<ProductoEntity> productos) {
         this.id = id;
         this.nombre = nombre;

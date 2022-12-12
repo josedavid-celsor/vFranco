@@ -39,7 +39,7 @@ public class ProductoEntity {
     private Set<CarritoEntity> carritos;
 
     @ManyToOne
-    @JoinColumn(name = "idTipoProducto")
+    @JoinColumn(name = "tipoproducto_id")
     private TipoProductoEntity tipoProducto;
 
     public Long getId() {

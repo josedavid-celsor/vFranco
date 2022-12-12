@@ -1,4 +1,4 @@
-package com.vFranco.vFranco.classes;
+package com.vFranco.vFranco.request;
 
 public class LoginRequest {
     String username;

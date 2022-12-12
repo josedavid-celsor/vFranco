@@ -37,6 +37,9 @@ public class JwtProvider {
   public String generateJwt(Authentication authentication) {
 
     String username = authentication.getName();
+    System.out.println(authentication.getAuthorities());
+    System.out.println(authentication.getAuthorities().size());
+    
     GrantedAuthority authority = authentication.getAuthorities().iterator().next();
     String role = authority.getAuthority();
 

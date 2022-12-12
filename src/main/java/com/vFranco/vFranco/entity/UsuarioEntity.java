@@ -55,7 +55,7 @@ public class UsuarioEntity {
     
     
     @ManyToOne
-    @JoinColumn(name = "idAuthority")
+    @JoinColumn(name = "authority_id")
     private AuthoritysEntity authority;
 
 
