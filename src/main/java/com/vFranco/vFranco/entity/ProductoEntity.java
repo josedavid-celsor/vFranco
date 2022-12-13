@@ -9,9 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -34,9 +32,6 @@ public class ProductoEntity {
 
     @Column(name = "precio")
     private double precio;
-    
-    @ManyToMany(mappedBy = "productos")
-    private Set<CarritoEntity> carritos;
 
     @ManyToOne
     @JoinColumn(name = "tipoproducto_id")
@@ -82,13 +77,6 @@ public class ProductoEntity {
         this.precio = precio;
     }
 
-    public Set<CarritoEntity> getCarritos() {
-        return carritos;
-    }
-
-    public void setCarritos(Set<CarritoEntity> carritos) {
-        this.carritos = carritos;
-    }
 
     public TipoProductoEntity getTipoProducto() {
         return tipoProducto;

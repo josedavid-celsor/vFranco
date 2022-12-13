@@ -65,12 +65,18 @@ public class AuthConttroller {
             if(authService.existByEmail(registerRequest.getEmail())){
                 return ResponseEntity.badRequest().body("email is already taken");
               }
+              System.out.println("El problema eres tu");
             UsuarioEntity usuarioEntity = authService.register(registerRequest);
+            System.out.println("El problema eres tu");
             GrantedAuthority authority = new SimpleGrantedAuthority(usuarioEntity.getAuthority().getNombre());
+            System.out.println("El problema eres tu");
             List<GrantedAuthority> authorities = Collections.singletonList((GrantedAuthority) authority);
+            System.out.println("El problema eres tu");
             String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(usuarioEntity.getUsername(), usuarioEntity.getPassword(), authorities));
-    
+            System.out.println("El problema eres tu");
+              
             return ResponseEntity.ok(token);
+            
         }catch(Exception e){
             logger.warning(e.toString());
             return ResponseEntity.ok("Por que eres así?");

@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="usuario")
+@Table(name="factura")
 public class FacturaEntity {
     
     @Id
