@@ -1,8 +1,12 @@
-/* package com.vFranco.vFranco.api;
+package com.vFranco.vFranco.api;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
-import com.vFranco.vFranco.helper.ValidationHelper;
-import com.vFranco.vFranco.repository.ProductoRepository;
 import com.vFranco.vFranco.request.CreateProductoRequest;
 import com.vFranco.vFranco.service.ProductoService;
 
@@ -27,9 +30,6 @@ public class ProductoController {
     
     @Autowired
     private ProductoService productoService;
-
-    @Autowired
-    private ProductoRepository productoRepository;
     
     @PostMapping("/")
     public ResponseEntity<?> createTipoProducto(@RequestBody CreateProductoRequest createProductoRequest){
@@ -47,15 +47,12 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.get(id));
     }
 
-    public Page<ProductoEntity> getPage(Pageable oPageable, String strFilter) {
-        ValidationHelper.validateRPP(oPageable.getPageSize());
-        Page<ProductoEntity> oPage = null;
-        if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
-            oPage = productoRepository.findAll(oPageable);
-        } else {
-            oPage = productoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
-        }
-        return oPage;
+    // /producto?page=0&size=10&sort=precio,desc&filter=verde&tipoproducto=2
+    @GetMapping("")
+    public ResponseEntity<Page<ProductoEntity>> getPage(
+            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @RequestParam(name = "filter", required = false) String strFilter,
+            @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
+        return new ResponseEntity<Page<ProductoEntity>>(productoService.getPage(oPageable, strFilter, lTipoProducto), HttpStatus.OK);
     }
 } 
- */

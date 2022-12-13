@@ -45,7 +45,7 @@ public class AuthConttroller {
         return ResponseEntity.ok(authService.login(loginRequest));
        } catch(Exception e){
         logger.warning(e.toString());
-        return ResponseEntity.badRequest().body("username doesn`t exist");
+        return ResponseEntity.badRequest().body("username  or password incorrect");
        }
     }
 

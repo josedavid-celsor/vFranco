@@ -82,8 +82,8 @@ public class AuthService implements UserDetailsService {
       
       UsuarioEntity user = new UsuarioEntity();
       AuthoritysEntity authority = new AuthoritysEntity();
-      authority.setId(1L);
-      authority.setNombre("admin");
+      authority.setId(2L);
+      authority.setNombre("cliente");
       user.setUsername(registerRequest.getUsername());
       user.setEmail(registerRequest.getEmail());
       user.setNombre(registerRequest.getNombre());

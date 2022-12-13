@@ -1,7 +1,6 @@
 package com.vFranco.vFranco.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -35,17 +31,9 @@ public class CompraEntity {
     @ManyToOne
     @JoinColumn(name = "idUsuario")
     private UsuarioEntity usuario;
-
-    @ManyToMany
-    @JoinTable(
-            name = "productoscompra",
-            joinColumns = @JoinColumn(name = "compra_id"),
-            inverseJoinColumns = @JoinColumn(name = "producto_id")
-    )
-    private Set<ProductoEntity> productos;
     
-    @OneToOne
-    @JoinColumn(name = "idFactura")
+    @ManyToOne
+    @JoinColumn(name = "id_factura")          
     private FacturaEntity factura;
 
     public Long getId() {
@@ -93,14 +81,6 @@ public class CompraEntity {
 
     public void setFactura(FacturaEntity factura) {
         this.factura = factura;
-    }
-
-    public Set<ProductoEntity> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(Set<ProductoEntity> productos) {
-        this.productos = productos;
     }
 
     

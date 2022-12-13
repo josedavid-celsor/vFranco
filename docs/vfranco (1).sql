@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 13-12-2022 a las 14:02:20
--- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 8.1.12
+-- Servidor: localhost:3306
+-- Tiempo de generación: 13-12-2022 a las 18:33:51
+-- Versión del servidor: 10.4.25-MariaDB
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `authoritys` (
   `id` bigint(20) NOT NULL,
-  `nombre` varchar(256) NOT NULL
+  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -43,17 +43,29 @@ INSERT INTO `authoritys` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `carrito`
+--
+
+CREATE TABLE `carrito` (
+  `id` bigint(20) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `producto_id` int(11) NOT NULL,
+  `factura_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `compra`
 --
 
 CREATE TABLE `compra` (
   `id` bigint(20) NOT NULL,
-  `productosc_id` bigint(20) NOT NULL,
-  `factura_id` bigint(20) NOT NULL,
-  `usuario_id` bigint(20) NOT NULL,
-  `fecha` datetime NOT NULL,
+  `cantidad` int(11) NOT NULL,
   `precio` double NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `producto_id` bigint(20) NOT NULL,
+  `facatura_id` bigint(20) NOT NULL,
+  `fecha` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -77,22 +89,11 @@ CREATE TABLE `factura` (
 
 CREATE TABLE `producto` (
   `id` bigint(20) NOT NULL,
-  `codigo` varchar(256) NOT NULL,
-  `nombre` varchar(256) NOT NULL,
+  `codigo` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `precio` double(10,2) NOT NULL,
   `tipoproducto_id` bigint(10) NOT NULL,
   `cantidad` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `productoscompra`
---
-
-CREATE TABLE `productoscompra` (
-  `compra_id` bigint(20) NOT NULL,
-  `producto_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -103,7 +104,7 @@ CREATE TABLE `productoscompra` (
 
 CREATE TABLE `tipoproducto` (
   `id` bigint(20) NOT NULL,
-  `nombre` varchar(256) NOT NULL
+  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -121,14 +122,14 @@ INSERT INTO `tipoproducto` (`id`, `nombre`) VALUES
 
 CREATE TABLE `usuario` (
   `id` bigint(20) NOT NULL,
-  `dni` varchar(11) NOT NULL,
-  `nombre` varchar(256) NOT NULL,
-  `apellido` varchar(256) NOT NULL,
-  `apellido2` varchar(256) NOT NULL,
-  `email` varchar(256) NOT NULL,
-  `username` varchar(256) NOT NULL,
-  `password` varchar(256) NOT NULL,
-  `token` varchar(256) DEFAULT NULL,
+  `dni` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `apellido` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `apellido2` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `token` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `authority_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -150,12 +151,18 @@ ALTER TABLE `authoritys`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `carrito`
+--
+ALTER TABLE `carrito`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `compra`
 --
 ALTER TABLE `compra`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `compra_factura_id_fk` (`factura_id`),
-  ADD KEY `compra_usuario_id_fk` (`usuario_id`);
+  ADD KEY `compra_producto_id_fk` (`producto_id`),
+  ADD KEY `compra_factura_id_fk` (`facatura_id`);
 
 --
 -- Indices de la tabla `factura`
@@ -169,13 +176,6 @@ ALTER TABLE `factura`
 ALTER TABLE `producto`
   ADD PRIMARY KEY (`id`),
   ADD KEY `producto_tipoproducto_id_fk` (`tipoproducto_id`);
-
---
--- Indices de la tabla `productoscompra`
---
-ALTER TABLE `productoscompra`
-  ADD PRIMARY KEY (`compra_id`,`producto_id`),
-  ADD KEY `productoscompra_producto_id_fk` (`producto_id`);
 
 --
 -- Indices de la tabla `tipoproducto`
@@ -199,6 +199,18 @@ ALTER TABLE `usuario`
 --
 ALTER TABLE `authoritys`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `carrito`
+--
+ALTER TABLE `carrito`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `compra`
+--
+ALTER TABLE `compra`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
@@ -232,21 +244,14 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `compra`
 --
 ALTER TABLE `compra`
-  ADD CONSTRAINT `compra_factura_id_fk` FOREIGN KEY (`factura_id`) REFERENCES `factura` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `compra_usuario_id_fk` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);
+  ADD CONSTRAINT `compra_factura_id_fk` FOREIGN KEY (`facatura_id`) REFERENCES `factura` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `compra_producto_id_fk` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `producto`
 --
 ALTER TABLE `producto`
   ADD CONSTRAINT `producto_tipoproducto_id_fk` FOREIGN KEY (`tipoproducto_id`) REFERENCES `tipoproducto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `productoscompra`
---
-ALTER TABLE `productoscompra`
-  ADD CONSTRAINT `productoscompra_compra_id_fk` FOREIGN KEY (`compra_id`) REFERENCES `compra` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `productoscompra_producto_id_fk` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`);
 
 --
 -- Filtros para la tabla `usuario`

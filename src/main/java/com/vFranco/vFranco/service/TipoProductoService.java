@@ -1,12 +1,18 @@
 package com.vFranco.vFranco.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.vFranco.vFranco.entity.TipoProductoEntity;
 import com.vFranco.vFranco.exception.ResourceNotFoundException;
 import com.vFranco.vFranco.exception.ResourceNotModifiedException;
+import com.vFranco.vFranco.helper.RandomHelper;
 import com.vFranco.vFranco.helper.ValidationHelper;
 import com.vFranco.vFranco.repository.TipoProductoRepository;
 import com.vFranco.vFranco.request.CreateTPRequest;
@@ -17,6 +23,11 @@ public class TipoProductoService {
     @Autowired
     TipoProductoRepository tipoProductoRepository;
     
+
+    private final String[] TIPO = {"Productos Químicos", "Celulosas y textiles", "Complementos de Higuiene",  
+                                  "Maquina de Limpieza"};
+    private final String[] CARATERISTICA = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza", 
+                                          "Inyección/Extracción"};
     
     public TipoProductoService(TipoProductoRepository tipoProductoRepository) {
       this.tipoProductoRepository = tipoProductoRepository;
@@ -77,4 +88,33 @@ public class TipoProductoService {
     validate(tipoProductoEntity);
     return tipoProductoRepository.save(tipoProductoEntity).getId();
 }
+
+public TipoProductoEntity generate() {
+  String nombre = TIPO[RandomHelper.getRandomInt(0, TIPO.length - 1)] + " " + CARATERISTICA[RandomHelper.getRandomInt(0, CARATERISTICA.length - 1)];
+  TipoProductoEntity tipoProductoEntity = new TipoProductoEntity();
+  tipoProductoEntity.setNombre(nombre);
+  return tipoProductoEntity;
+}
+
+public Long generateSome(@PathVariable(value = "amount") int amount) {
+  
+  for (int i = 0; i < amount; i++) {
+      TipoProductoEntity tipoProductoEntity = generate();
+      tipoProductoRepository.save(tipoProductoEntity);
+  }
+  return tipoProductoRepository.count();
+}
+
+
+public Page<TipoProductoEntity> getPage(Pageable oPageable, String strFilter) {
+  ValidationHelper.validateRPP(oPageable.getPageSize());
+  Page<TipoProductoEntity> oPage = null;
+  if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+      oPage = tipoProductoRepository.findAll(oPageable);
+  } else {
+      oPage = tipoProductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
+  }
+  return oPage;
+}
+
 }

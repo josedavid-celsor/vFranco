@@ -1,4 +1,4 @@
-/* package com.vFranco.vFranco.request;
+package com.vFranco.vFranco.request;
 
 public class CreateProductoRequest {
     
@@ -34,4 +34,3 @@ public class CreateProductoRequest {
     
     
 }
- */
