@@ -48,7 +48,7 @@ public class AuthService implements UserDetailsService {
     }
     System.out.println(usuario.getPassword());
     System.out.println(encryptedPassword);
-    if (!usuario.getPassword().equals(encryptedPassword)) {
+    if (!usuario.getPassword().equals(loginRequest.getPassword())) {
       throw new RuntimeException("Contraseña incorrecta");
     }
     UserDetails userDetails = loadUserByUsername(loginRequest.getUsername());
@@ -88,7 +88,7 @@ public class AuthService implements UserDetailsService {
     user.setApellido(registerRequest.getApellido());
     user.setApellido2(registerRequest.getApellido2());
     user.setDni(registerRequest.getDni());
-    user.setPassword(encryptedPassword);
+    user.setPassword(registerRequest.getPassword());
     user.setAuthority(authority);
 
     return usuarioRepository.save(user);

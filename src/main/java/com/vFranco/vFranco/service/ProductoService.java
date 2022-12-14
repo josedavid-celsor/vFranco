@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
 import com.vFranco.vFranco.exception.ResourceNotFoundException;
+import com.vFranco.vFranco.exception.ResourceNotModifiedException;
 import com.vFranco.vFranco.helper.ValidationHelper;
 import com.vFranco.vFranco.repository.ProductoRepository;
 import com.vFranco.vFranco.request.CreateProductoRequest;
@@ -65,5 +66,30 @@ public class ProductoService {
         }
     }
     return oPage;
+}
+
+//Update
+public ProductoEntity update(ProductoEntity productoBDDEntity, ProductoEntity productoEntity) {
+    productoBDDEntity.setNombre(productoEntity.getNombre());
+    productoBDDEntity.setCantidad(productoEntity.getCantidad());
+    productoBDDEntity.setCodigo(productoEntity.getCodigo());
+    productoBDDEntity.setTipoProducto(productoEntity.getTipoProducto());
+    productoBDDEntity.setPrecio(productoEntity.getPrecio());
+    return productoRepository.save(productoBDDEntity);
+}
+
+ //Delete
+ public Long delete(@PathVariable(value = "id") Long id) {
+      
+    if (productoRepository.existsById(id)) {
+        productoRepository.deleteById(id);
+        if (productoRepository.existsById(id)) {
+            throw new ResourceNotModifiedException("Can't remove register " + id);
+        } else {
+            return id;
+        }
+    } else {
+        return 0L;
+    }
 }
 }

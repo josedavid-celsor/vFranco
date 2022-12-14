@@ -91,6 +91,6 @@ public class TipoProductoController {
     @PostMapping("/generate/{amount}")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
-        return new ResponseEntity<Long>(tipoProductoService.generateSome(amount), HttpStatus.OK);
+        return ResponseEntity.ok(tipoProductoService.generateSome(amount));
     }
 }
