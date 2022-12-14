@@ -28,11 +28,11 @@ public class TipoProductoService {
                                   "Maquina de Limpieza"};
     private final String[] CARATERISTICA = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza", 
                                           "Inyección/Extracción"};
-    
+    //Constructor
     public TipoProductoService(TipoProductoRepository tipoProductoRepository) {
       this.tipoProductoRepository = tipoProductoRepository;
   }
-
+  //validaciones
   public void validate(Long id) {
         if (!tipoProductoRepository.existsById(id)) {
             throw new ResourceNotFoundException("id " + id + " not exist");
@@ -42,6 +42,8 @@ public class TipoProductoService {
     public void validate(TipoProductoEntity oTipoproductoEntity) {
         ValidationHelper.validateStringLength(oTipoproductoEntity.getNombre(), 2, 100, "campo nombre Tipoproducto (el campo debe tener longitud de 2 a 100 caracteres)");
     }
+
+    //Crear tipoP
     public TipoProductoEntity creaTipoProducto(CreateTPRequest createTPRequest){
       
         TipoProductoEntity tipoProducto = new TipoProductoEntity();
@@ -59,6 +61,7 @@ public class TipoProductoService {
        
       }
 
+      //Get
      public TipoProductoEntity get(@PathVariable(value = "id") Long id) {
         if (tipoProductoRepository.existsById(id)) {
             return tipoProductoRepository.findById(id).orElseThrow(null);
@@ -67,6 +70,7 @@ public class TipoProductoService {
         }
     }
 
+    //Delete
     public Long delete(@PathVariable(value = "id") Long id) {
       
       if (tipoProductoRepository.existsById(id)) {
@@ -81,12 +85,10 @@ public class TipoProductoService {
       }
   }
 
-  public Long update(Long id, TipoProductoEntity tipoProductoEntity) {
-   
-    tipoProductoEntity.setId(id);
-    validate(id);
-    validate(tipoProductoEntity);
-    return tipoProductoRepository.save(tipoProductoEntity).getId();
+  //Update
+  public TipoProductoEntity update(TipoProductoEntity tipoProductoBDDEntity, TipoProductoEntity tipoProductoEntity) {
+    tipoProductoBDDEntity.setNombre(tipoProductoEntity.getNombre());
+    return tipoProductoRepository.save(tipoProductoBDDEntity);
 }
 
 public TipoProductoEntity generate() {

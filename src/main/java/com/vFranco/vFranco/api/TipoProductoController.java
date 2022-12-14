@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,9 @@ public class TipoProductoController {
 
 
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<?> createTipoProducto(@RequestBody CreateTPRequest createRequest){
+
         if(tipoProductoService.existByName(createRequest.getNombre())){
             return ResponseEntity.badRequest().body("name is already taken");
           }
@@ -55,6 +58,7 @@ public class TipoProductoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
         TipoProductoEntity tipoProductoEntity = tipoProductoService.get(id);
         if(tipoProductoEntity != null){
@@ -66,18 +70,26 @@ public class TipoProductoController {
         
     }
 
-    @PutMapping("/")
-    public ResponseEntity<Long> update(@RequestBody TipoProductoEntity tipoProductoEntity) {
-        return new ResponseEntity<Long>(tipoProductoService.update(tipoProductoEntity.getId(), tipoProductoEntity), HttpStatus.OK);
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<TipoProductoEntity> update(@RequestBody TipoProductoEntity tipoProductoEntity, @PathVariable(value = "id") Long id) {
+        TipoProductoEntity tipoProductoBDDEntity = tipoProductoService.get(id);
+        if(tipoProductoEntity != null){
+            return ResponseEntity.ok(tipoProductoService.update(tipoProductoBDDEntity, tipoProductoEntity));
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+        
     }
 
-
     @PostMapping("/generate")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<TipoProductoEntity> generate() {
-        return new ResponseEntity<TipoProductoEntity>(tipoProductoService.generate(), HttpStatus.OK);
+        return ResponseEntity.ok(tipoProductoService.generate());
     }
 
     @PostMapping("/generate/{amount}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
         return new ResponseEntity<Long>(tipoProductoService.generateSome(amount), HttpStatus.OK);
     }

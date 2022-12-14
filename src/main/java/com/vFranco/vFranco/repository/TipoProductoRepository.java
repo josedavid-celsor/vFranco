@@ -10,10 +10,12 @@ import org.springframework.stereotype.Repository;
 import com.vFranco.vFranco.entity.TipoProductoEntity;
 
 @Repository
-public interface TipoProductoRepository extends JpaRepository<TipoProductoEntity, Long> {
+public interface TipoProductoRepository extends JpaRepository<TipoProductoEntity, Long>{
     
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN 'true' ELSE 'false' END FROM TipoProductoEntity u WHERE u.nombre = :nombre")
     boolean existsByName(@Param("nombre") String name);
 
     public Page<TipoProductoEntity> findByNombreIgnoreCaseContaining(String strFilter, Pageable oPageable);
+
+    
 }

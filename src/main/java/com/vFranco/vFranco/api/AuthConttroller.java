@@ -40,13 +40,9 @@ public class AuthConttroller {
 
     @PostMapping("/token")
     public ResponseEntity<String> generateToken(@RequestBody LoginRequest loginRequest){
-        /* System.out.println("XDDD"); */
-       try{
+       
         return ResponseEntity.ok(authService.login(loginRequest));
-       } catch(Exception e){
-        logger.warning(e.toString());
-        return ResponseEntity.badRequest().body("username  or password incorrect");
-       }
+      
     }
 
     @GetMapping("/verify")
@@ -65,16 +61,11 @@ public class AuthConttroller {
             if(authService.existByEmail(registerRequest.getEmail())){
                 return ResponseEntity.badRequest().body("email is already taken");
               }
-              System.out.println("El problema eres tu");
             UsuarioEntity usuarioEntity = authService.register(registerRequest);
-            System.out.println("El problema eres tu");
             GrantedAuthority authority = new SimpleGrantedAuthority(usuarioEntity.getAuthority().getNombre());
-            System.out.println("El problema eres tu");
             List<GrantedAuthority> authorities = Collections.singletonList((GrantedAuthority) authority);
-            System.out.println("El problema eres tu");
             String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(usuarioEntity.getUsername(), usuarioEntity.getPassword(), authorities));
-            System.out.println("El problema eres tu");
-              
+
             return ResponseEntity.ok(token);
             
         }catch(Exception e){

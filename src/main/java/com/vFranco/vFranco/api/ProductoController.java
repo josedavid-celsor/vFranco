@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ProductoController {
     private ProductoService productoService;
     
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<?> createTipoProducto(@RequestBody CreateProductoRequest createProductoRequest){
         if(productoService.existByName(createProductoRequest.getNombre())){
 
@@ -53,6 +55,6 @@ public class ProductoController {
             @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
             @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
-        return new ResponseEntity<Page<ProductoEntity>>(productoService.getPage(oPageable, strFilter, lTipoProducto), HttpStatus.OK);
+        return ResponseEntity.ok(productoService.getPage(oPageable, strFilter, lTipoProducto));
     }
 } 

@@ -11,10 +11,10 @@ import com.vFranco.vFranco.exception.ResourceNotFoundException;
 import com.vFranco.vFranco.helper.ValidationHelper;
 import com.vFranco.vFranco.repository.ProductoRepository;
 import com.vFranco.vFranco.request.CreateProductoRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductoService {
     
     @Autowired
@@ -59,9 +59,9 @@ public class ProductoService {
         }
     } else {
         if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
-            oPage = productoRepository.findByTipoproductoId(lTipoProducto, oPageable);
+            oPage = productoRepository.findByTipoProducto(lTipoProducto, oPageable);
         } else {
-            oPage = productoRepository.findByTipoproductoIdAndNombreOrCodigo(lTipoProducto, strFilter, strFilter, oPageable);
+            oPage = productoRepository.findByTipoProductoAndNombreOrCodigo(lTipoProducto, strFilter, strFilter, oPageable);
         }
     }
     return oPage;
