@@ -1,5 +1,7 @@
 package com.vFranco.vFranco.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -119,4 +121,13 @@ public Page<TipoProductoEntity> getPage(Pageable oPageable, String strFilter) {
   return oPage;
 }
 
+public TipoProductoEntity getOneRandom() {
+  TipoProductoEntity tipoProductoEntity = null;
+  int iPosicion = RandomHelper.getRandomInt(0, (int) tipoProductoRepository.count() - 1);
+  Pageable oPageable = PageRequest.of(iPosicion, 1);
+  Page<TipoProductoEntity> tipoProductoPage = tipoProductoRepository.findAll(oPageable);
+  List<TipoProductoEntity> tipoProductoList = tipoProductoPage.getContent();
+  tipoProductoEntity = tipoProductoRepository.getById(tipoProductoList.get(0).getId());
+  return tipoProductoEntity;
+}
 }

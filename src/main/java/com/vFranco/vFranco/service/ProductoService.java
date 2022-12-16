@@ -2,13 +2,17 @@ package com.vFranco.vFranco.service;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
 import com.vFranco.vFranco.exception.ResourceNotFoundException;
 import com.vFranco.vFranco.exception.ResourceNotModifiedException;
+import com.vFranco.vFranco.helper.RandomHelper;
 import com.vFranco.vFranco.helper.ValidationHelper;
 import com.vFranco.vFranco.repository.ProductoRepository;
 import com.vFranco.vFranco.request.CreateProductoRequest;
@@ -20,16 +24,12 @@ public class ProductoService {
     
     @Autowired
     ProductoRepository productoRepository;
+    @Autowired
+    TipoProductoService tipoProductoService;
 
-    private final String[] NOMBRE = {"Productos Químicos", "Celulosas y textiles", "Complementos de Higuiene",  
-                                  "Maquina de Limpieza"};
-    private final String[] PRECIO = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza", 
-                                          "Inyección/Extracción"};
-
-    private final String[] TIPO_ID = {"Productos Químicos", "Celulosas y textiles", "Complementos de Higuiene",  
-                                  "Maquina de Limpieza"};
-    private final String[] CANTIDAD = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza", 
-                                          "Inyección/Extracción"};
+    private final String[] NOMBRE = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza LEWI",  
+                                  "Aspiradoras de Polvo"};
+    private final String[] CODIGO = {"154541fdsafd","fdsafdsa5454","fdsafdsa5484848854","87481564dsaf"};
 
     public ProductoService(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
@@ -102,20 +102,34 @@ public ProductoEntity update(ProductoEntity productoBDDEntity, ProductoEntity pr
     }
 }
 
-/* public ProductoEntity generate() {
-    String nombre = TIPO[RandomHelper.getRandomInt(0, TIPO.length - 1)] + " " + CARATERISTICA[RandomHelper.getRandomInt(0, CARATERISTICA.length - 1)];
+public ProductoEntity generate() {
     ProductoEntity productoEntity = new ProductoEntity();
+    String nombre = NOMBRE[RandomHelper.getRandomInt(0, NOMBRE.length -1)];
+    String codigo = CODIGO[RandomHelper.getRandomInt(0, CODIGO.length -1)];
     productoEntity.setNombre(nombre);
+    productoEntity.setCodigo(codigo);
+    productoEntity.setCantidad(RandomHelper.getRandomInt(0, 100));
+    productoEntity.setPrecio(RandomHelper.getRadomDouble(0, 100));
+    productoEntity.setTipoProducto(tipoProductoService.getOneRandom());
     return productoEntity;
-  } */
+  } 
   
-/*   public Long generateSome(@PathVariable(value = "amount") int amount) {
+public Long generateSome(@PathVariable(value = "amount") int amount) {
     
     for (int i = 0; i < amount; i++) {
         ProductoEntity productoEntity = generate();
         productoRepository.save(productoEntity);
     }
     return productoRepository.count();
-  } */
+  } 
   
+  public ProductoEntity getOneRandom() {
+    ProductoEntity productoEntity = null;
+    int iPosicion = RandomHelper.getRandomInt(0, (int) productoRepository.count() - 1);
+    Pageable oPageable = PageRequest.of(iPosicion, 1);
+    Page<ProductoEntity> tipoProductoPage = productoRepository.findAll(oPageable);
+    List<ProductoEntity> tipoProductoList = tipoProductoPage.getContent();
+    productoEntity = productoRepository.getById(tipoProductoList.get(0).getId());
+    return productoEntity;
+}
 }
