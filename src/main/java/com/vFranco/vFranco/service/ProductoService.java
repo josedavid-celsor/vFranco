@@ -21,6 +21,16 @@ public class ProductoService {
     @Autowired
     ProductoRepository productoRepository;
 
+    private final String[] NOMBRE = {"Productos Químicos", "Celulosas y textiles", "Complementos de Higuiene",  
+                                  "Maquina de Limpieza"};
+    private final String[] PRECIO = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza", 
+                                          "Inyección/Extracción"};
+
+    private final String[] TIPO_ID = {"Productos Químicos", "Celulosas y textiles", "Complementos de Higuiene",  
+                                  "Maquina de Limpieza"};
+    private final String[] CANTIDAD = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza", 
+                                          "Inyección/Extracción"};
+
     public ProductoService(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
     }
@@ -80,7 +90,6 @@ public ProductoEntity update(ProductoEntity productoBDDEntity, ProductoEntity pr
 
  //Delete
  public Long delete(@PathVariable(value = "id") Long id) {
-      
     if (productoRepository.existsById(id)) {
         productoRepository.deleteById(id);
         if (productoRepository.existsById(id)) {
@@ -92,4 +101,21 @@ public ProductoEntity update(ProductoEntity productoBDDEntity, ProductoEntity pr
         return 0L;
     }
 }
+
+/* public ProductoEntity generate() {
+    String nombre = TIPO[RandomHelper.getRandomInt(0, TIPO.length - 1)] + " " + CARATERISTICA[RandomHelper.getRandomInt(0, CARATERISTICA.length - 1)];
+    ProductoEntity productoEntity = new ProductoEntity();
+    productoEntity.setNombre(nombre);
+    return productoEntity;
+  } */
+  
+/*   public Long generateSome(@PathVariable(value = "amount") int amount) {
+    
+    for (int i = 0; i < amount; i++) {
+        ProductoEntity productoEntity = generate();
+        productoRepository.save(productoEntity);
+    }
+    return productoRepository.count();
+  } */
+  
 }
