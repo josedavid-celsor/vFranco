@@ -122,12 +122,8 @@ public Page<TipoProductoEntity> getPage(Pageable oPageable, String strFilter) {
 }
 
 public TipoProductoEntity getOneRandom() {
-  TipoProductoEntity tipoProductoEntity = null;
-  int iPosicion = RandomHelper.getRandomInt(0, (int) tipoProductoRepository.count() - 1);
-  Pageable oPageable = PageRequest.of(iPosicion, 1);
-  Page<TipoProductoEntity> tipoProductoPage = tipoProductoRepository.findAll(oPageable);
-  List<TipoProductoEntity> tipoProductoList = tipoProductoPage.getContent();
-  tipoProductoEntity = tipoProductoRepository.getById(tipoProductoList.get(0).getId());
-  return tipoProductoEntity;
+  List<TipoProductoEntity> listadotipos = tipoProductoRepository.findAll();
+  int iPosicion = RandomHelper.getRandomInt(0,  listadotipos.size());
+  return listadotipos.get(iPosicion);
 }
 }

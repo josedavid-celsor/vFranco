@@ -115,7 +115,6 @@ public ProductoEntity generate() {
   } 
   
 public Long generateSome(@PathVariable(value = "amount") int amount) {
-    
     for (int i = 0; i < amount; i++) {
         ProductoEntity productoEntity = generate();
         productoRepository.save(productoEntity);
@@ -124,12 +123,8 @@ public Long generateSome(@PathVariable(value = "amount") int amount) {
   } 
   
   public ProductoEntity getOneRandom() {
-    ProductoEntity productoEntity = null;
-    int iPosicion = RandomHelper.getRandomInt(0, (int) productoRepository.count() - 1);
-    Pageable oPageable = PageRequest.of(iPosicion, 1);
-    Page<ProductoEntity> tipoProductoPage = productoRepository.findAll(oPageable);
-    List<ProductoEntity> tipoProductoList = tipoProductoPage.getContent();
-    productoEntity = productoRepository.getById(tipoProductoList.get(0).getId());
-    return productoEntity;
+    List<ProductoEntity> listadoproductos = productoRepository.findAll();
+    int iPosicion = RandomHelper.getRandomInt(0,  listadoproductos.size());
+    return listadoproductos.get(iPosicion);
 }
 }

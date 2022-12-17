@@ -39,7 +39,7 @@ public class AuthConttroller {
     private JwtProvider jwtProvider;
 
     @PostMapping("/token")
-    public ResponseEntity<String> generateToken(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<UsuarioEntity> generateToken(@RequestBody LoginRequest loginRequest){
        
         return ResponseEntity.ok(authService.login(loginRequest));
       

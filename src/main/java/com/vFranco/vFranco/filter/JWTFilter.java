@@ -34,7 +34,11 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         /* System.out.println("XDDD"); */
         String jwt = resolveToken(request);
-        if (jwt != null) {
+        System.out.println(jwt);
+        System.out.println(jwt.length());
+        System.out.println(jwt instanceof String);
+        if (!"null".equals(jwt)) {
+            System.out.println("No debi entrar");
             // If a JWT token was found, try to authenticate the user using the token
             Authentication authentication = jwtProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);

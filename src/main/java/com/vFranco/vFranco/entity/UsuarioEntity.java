@@ -41,7 +41,7 @@ public class UsuarioEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-
+    private String token;
     @ManyToOne
     @JoinColumn(name = "authority_id")
     private AuthoritysEntity authority;
@@ -51,7 +51,7 @@ public class UsuarioEntity {
     }
 
     public UsuarioEntity(Long id, String dni, String nombre, String apellido, String apellido2, String email,
-            String username, String password, AuthoritysEntity authority) {
+            String username, String password,  AuthoritysEntity authority) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
@@ -133,6 +133,14 @@ public class UsuarioEntity {
 
     public void setAuthority(AuthoritysEntity authority) {
         this.authority = authority;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }

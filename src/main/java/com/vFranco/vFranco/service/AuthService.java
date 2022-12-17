@@ -1,5 +1,6 @@
 package com.vFranco.vFranco.service;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,8 +9,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.vFranco.vFranco.request.LoginRequest;
@@ -38,22 +37,24 @@ public class AuthService implements UserDetailsService {
     this.jwtProvider = jwtProvider;
   }
 
-  public String login(LoginRequest loginRequest) {
+  public UsuarioEntity login(LoginRequest loginRequest) {
     UsuarioEntity usuario = usuarioRepository.findByUsername(loginRequest.getUsername());
 
     // Para encriptar el password
-    String encryptedPassword = passwordEncoder.encode(loginRequest.getPassword());
+    String encryptedPassword=DigestUtils.md5Hex(loginRequest.getPassword());
     if (usuario == null) {
       throw new RuntimeException("Usuario no encontrado");
     }
     System.out.println(usuario.getPassword());
     System.out.println(encryptedPassword);
-    if (!usuario.getPassword().equals(loginRequest.getPassword())) {
+    if (!usuario.getPassword().equals(encryptedPassword)) {
       throw new RuntimeException("Contraseña incorrecta");
     }
     UserDetails userDetails = loadUserByUsername(loginRequest.getUsername());
-    return jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
-        encryptedPassword, userDetails.getAuthorities()));
+    String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+    encryptedPassword, userDetails.getAuthorities()));
+    usuario.setToken(token);
+    return usuario;
   }
 
   // A partir de un usuario saca el usuario, para ver si existe y en el caso de
@@ -79,7 +80,7 @@ public class AuthService implements UserDetailsService {
     AuthoritysEntity authority = new AuthoritysEntity();
 
     // Para encriptar el password
-    String encryptedPassword = passwordEncoder.encode(registerRequest.getPassword());
+    String encryptedPassword=DigestUtils.md5Hex(registerRequest.getPassword());
     authority.setId(2L);
     authority.setNombre("cliente");
     user.setUsername(registerRequest.getUsername());
@@ -88,7 +89,7 @@ public class AuthService implements UserDetailsService {
     user.setApellido(registerRequest.getApellido());
     user.setApellido2(registerRequest.getApellido2());
     user.setDni(registerRequest.getDni());
-    user.setPassword(registerRequest.getPassword());
+    user.setPassword(encryptedPassword);
     user.setAuthority(authority);
 
     return usuarioRepository.save(user);

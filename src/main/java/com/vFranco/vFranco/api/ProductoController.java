@@ -86,7 +86,7 @@ public class ProductoController {
     @PostMapping("/generate")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<ProductoEntity> generate() {
-        return ResponseEntity.ok(productoService.generate());
+        return ResponseEntity.ok(productoService.generate());  
     }
 
     @PostMapping("/generate/{amount}")
