@@ -81,8 +81,8 @@ public class AuthService implements UserDetailsService {
 
     // Para encriptar el password
     String encryptedPassword=DigestUtils.md5Hex(registerRequest.getPassword());
-    authority.setId(2L);
-    authority.setNombre("cliente");
+    authority.setId(1L);
+    authority.setNombre("admin");
     user.setUsername(registerRequest.getUsername());
     user.setEmail(registerRequest.getEmail());
     user.setNombre(registerRequest.getNombre());
