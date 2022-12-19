@@ -32,16 +32,22 @@ public class JWTFilter extends OncePerRequestFilter {
   
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        /* System.out.println("XDDD"); */
-        String jwt = resolveToken(request);
-        if (!"null".equals(jwt)) {
-            // If a JWT token was found, try to authenticate the user using the token
-            Authentication authentication = jwtProvider.getAuthentication(jwt);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        String path = request.getServletPath();
+        if(path.equals("/Auth/token") || path.equals("/Auth/register")){
+            System.out.println("desprotegido");
+            filterChain.doFilter(request, response);
+        }else{
+            String jwt = resolveToken(request);
+            if (!"null".equals(jwt)) {
+                // If a JWT token was found, try to authenticate the user using the token
+                Authentication authentication = jwtProvider.getAuthentication(jwt);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            /*  System.out.println("XDD222D"); */
+            // Continue with the request
+            filterChain.doFilter(request, response);
         }
-       /*  System.out.println("XDD222D"); */
-        // Continue with the request
-        filterChain.doFilter(request, response);
+
 
     }
 

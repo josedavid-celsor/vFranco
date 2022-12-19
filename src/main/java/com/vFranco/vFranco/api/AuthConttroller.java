@@ -52,7 +52,7 @@ public class AuthConttroller {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest){
         try{
             if(authService.existByUsername(registerRequest.getUsername())){
 
@@ -65,8 +65,8 @@ public class AuthConttroller {
             GrantedAuthority authority = new SimpleGrantedAuthority(usuarioEntity.getAuthority().getNombre());
             List<GrantedAuthority> authorities = Collections.singletonList((GrantedAuthority) authority);
             String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(usuarioEntity.getUsername(), usuarioEntity.getPassword(), authorities));
-
-            return ResponseEntity.ok(token);
+            usuarioEntity.setToken(token);
+            return ResponseEntity.ok(usuarioEntity);
             
         }catch(Exception e){
             logger.warning(e.toString());

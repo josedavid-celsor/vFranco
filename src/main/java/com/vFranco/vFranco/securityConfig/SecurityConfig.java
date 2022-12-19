@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/Auth/**").permitAll()
             .anyRequest().authenticated()
-            .and().cors().and()
+            .and().cors().and() 
             .apply(jwtConfigurer);
   }
 }

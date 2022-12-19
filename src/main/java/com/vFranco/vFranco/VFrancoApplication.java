@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import com.vFranco.vFranco.securityConfig.CORSConfig;
 
 @SpringBootApplication
-@Import(CORSConfig.class)
+@Import(CORSConfig.class) 
 public class VFrancoApplication {
 
 	public static void main(String[] args) {
