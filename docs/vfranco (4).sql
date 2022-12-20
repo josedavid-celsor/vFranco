@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 13-12-2022 a las 18:33:51
--- Versión del servidor: 10.4.25-MariaDB
--- Versión de PHP: 8.1.10
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 20-12-2022 a las 13:26:23
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `authoritys` (
   `id` bigint(20) NOT NULL,
-  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL
+  `nombre` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -89,8 +89,8 @@ CREATE TABLE `factura` (
 
 CREATE TABLE `producto` (
   `id` bigint(20) NOT NULL,
-  `codigo` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `codigo` varchar(256) NOT NULL,
+  `nombre` varchar(256) NOT NULL,
   `precio` double(10,2) NOT NULL,
   `tipoproducto_id` bigint(10) NOT NULL,
   `cantidad` int(11) NOT NULL
@@ -104,7 +104,7 @@ CREATE TABLE `producto` (
 
 CREATE TABLE `tipoproducto` (
   `id` bigint(20) NOT NULL,
-  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL
+  `nombre` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -112,7 +112,15 @@ CREATE TABLE `tipoproducto` (
 --
 
 INSERT INTO `tipoproducto` (`id`, `nombre`) VALUES
-(1, 'pez');
+(57, 'Maquina de Limpieza '),
+(58, 'Productos Químicos Inyección/Extracción'),
+(59, 'Productos Químicos Ambientadores y desodorantes'),
+(60, 'Complementos de Higuiene Ambientadores y desodorantes'),
+(61, 'Celulosas y textiles Celulosa Industrial'),
+(62, 'Productos Químicos Útiles de Limpieza'),
+(63, 'Maquina de Limpieza Inyección/Extracción'),
+(68, 'Maquina de Limpieza Útiles de Limpieza'),
+(69, 'Celulosas y textiles Ambientadores y desodorantes');
 
 -- --------------------------------------------------------
 
@@ -122,14 +130,14 @@ INSERT INTO `tipoproducto` (`id`, `nombre`) VALUES
 
 CREATE TABLE `usuario` (
   `id` bigint(20) NOT NULL,
-  `dni` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
-  `nombre` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `apellido` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `apellido2` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `username` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `token` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dni` varchar(11) NOT NULL,
+  `nombre` varchar(256) NOT NULL,
+  `apellido` varchar(256) NOT NULL,
+  `apellido2` varchar(256) NOT NULL,
+  `email` varchar(256) NOT NULL,
+  `username` varchar(256) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `token` varchar(256) DEFAULT NULL,
   `authority_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -138,7 +146,10 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `dni`, `nombre`, `apellido`, `apellido2`, `email`, `username`, `password`, `token`, `authority_id`) VALUES
-(1, '125489544', 'jose', 'asd', 'ads', 'buenas@quetal.com', 'admin', 'holiquetal', NULL, 1);
+(6, '54451256156', 'pepe', 'f', 'f', 'buenas@tardes.com', 'cliente1', '82d7eeedb5bbfdaf7b7d0fe6f40a9ce2', NULL, 2),
+(7, '54451256156', 'jose', 'r', 'r', 'dios@mio.com', 'admin', 'f38d09938ead31a57eca34d2a0df1c44', NULL, 1),
+(8, '54451256156', 'sergi', 'm', 'r', 'aiuda@policia.com', 'cliente', 'f38d09938ead31a57eca34d2a0df1c44', NULL, 2),
+(9, '78451542E', 'alex', 'jimenez', 'ramirez', 'pat@example.com', 'alex/cliente', 'f38d09938ead31a57eca34d2a0df1c44', NULL, 2);
 
 --
 -- Índices para tablas volcadas
@@ -222,19 +233,19 @@ ALTER TABLE `factura`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoproducto`
 --
 ALTER TABLE `tipoproducto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas
