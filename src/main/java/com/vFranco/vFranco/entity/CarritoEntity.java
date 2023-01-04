@@ -1,9 +1,8 @@
 package com.vFranco.vFranco.entity;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,8 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="compra")
-public class CompraEntity {
+@Table(name="carrito")
+public class CarritoEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,17 +21,16 @@ public class CompraEntity {
     @Column(name = "cantidad")
     private int cantidad;
 
-    @Column(name = "precio")
-    private double precio;
-
-     
     @ManyToOne
-    @JoinColumn(name = "factura_id")          
-    private FacturaEntity factura;
-
-     @ManyToOne
-    @JoinColumn(name = "producto_id")          
+    @JoinColumn(name = "producto_id")
     private ProductoEntity producto;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private UsuarioEntity usuario;
+
+    public CarritoEntity() {
+    }
 
     public Long getId() {
         return id;
@@ -50,14 +48,6 @@ public class CompraEntity {
         this.cantidad = cantidad;
     }
 
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
 
     public ProductoEntity getProducto() {
         return producto;
@@ -66,16 +56,5 @@ public class CompraEntity {
     public void setProducto(ProductoEntity producto) {
         this.producto = producto;
     }
-    public FacturaEntity getFactura() {
-        return factura;
-    }
-
-    public void setFactura(FacturaEntity factura) {
-        this.factura = factura;
-    }
-
-    
-   
-    
-    
+ 
 }

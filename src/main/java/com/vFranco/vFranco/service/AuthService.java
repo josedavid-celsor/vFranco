@@ -45,8 +45,6 @@ public class AuthService implements UserDetailsService {
     if (usuario == null) {
       throw new RuntimeException("Usuario no encontrado");
     }
-    System.out.println(usuario.getPassword());
-    System.out.println(encryptedPassword);
     if (!usuario.getPassword().equals(encryptedPassword)) {
       throw new RuntimeException("Contraseña incorrecta");
     }

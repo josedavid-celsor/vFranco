@@ -1,11 +1,14 @@
 package com.vFranco.vFranco.request;
 
+import com.vFranco.vFranco.entity.TipoProductoEntity;
+
 public class CreateProductoRequest {
     
     private String codigo;
     private String nombre;
     private int cantidad;
     private double precio;
+    private TipoProductoEntity tipoProducto;
 
     public String getCodigo() {
         return codigo;
@@ -30,6 +33,12 @@ public class CreateProductoRequest {
     }
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+    public TipoProductoEntity getTipoProducto() {
+        return tipoProducto;
+    }
+    public void setTipoProducto(TipoProductoEntity tipoProducto) {
+        this.tipoProducto = tipoProducto;
     }
     
     

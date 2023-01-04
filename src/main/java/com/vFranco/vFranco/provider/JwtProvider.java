@@ -37,8 +37,6 @@ public class JwtProvider {
   public String generateJwt(Authentication authentication) {
 
     String username = authentication.getName();
-    System.out.println(authentication.getAuthorities());
-    System.out.println(authentication.getAuthorities().size());
     
     GrantedAuthority authority = authentication.getAuthorities().iterator().next();
     String role = authority.getAuthority();
@@ -80,5 +78,16 @@ public class JwtProvider {
       /* logger.error("Expired or invalid JWT token"); */
     }
     return false;
+  }
+  public boolean validatejwtAdmin(String jwtAdmin) {
+    
+    if(!validatejwt(jwtAdmin)){
+      return false;
+    }
+    Authentication user = getAuthentication(jwtAdmin);
+    GrantedAuthority authority = user.getAuthorities().iterator().next();
+    String role = authority.getAuthority();
+    
+    return "admin".equals(role);
   }
 }

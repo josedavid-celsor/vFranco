@@ -53,7 +53,7 @@ public class TipoProductoController {
     @GetMapping("")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Page<TipoProductoEntity>> getPage(
-            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @ParameterObject @PageableDefault(page = 0, size = 5, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter) {
         return new ResponseEntity<Page<TipoProductoEntity>>(tipoProductoService.getPage(oPageable, strFilter), HttpStatus.OK);
     }

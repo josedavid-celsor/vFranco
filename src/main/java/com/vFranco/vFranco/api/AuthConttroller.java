@@ -51,6 +51,12 @@ public class AuthConttroller {
         return ResponseEntity.ok(isValid);
     }
 
+    @GetMapping("/verifyadmin")
+    public ResponseEntity<Boolean> verifyAdmin(@RequestParam("tokenadmin") String tokenadmin){
+        boolean isValid =jwtProvider.validatejwtAdmin(tokenadmin);
+        return ResponseEntity.ok(isValid);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest){
         try{

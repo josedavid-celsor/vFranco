@@ -35,7 +35,7 @@ public class ProductoController {
     
     @PostMapping("/")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<?> createTipoProducto(@RequestBody CreateProductoRequest createProductoRequest){
+    public ResponseEntity<?> createProducto(@RequestBody CreateProductoRequest createProductoRequest){
         if(productoService.existByName(createProductoRequest.getNombre())){
 
             return ResponseEntity.badRequest().body("name is already taken");
@@ -77,9 +77,10 @@ public class ProductoController {
 
     @GetMapping("")
     public ResponseEntity<Page<ProductoEntity>> getPage(
-            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @ParameterObject @PageableDefault(page = 0, size = 5, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
             @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
+                
         return ResponseEntity.ok(productoService.getPage(oPageable, strFilter, lTipoProducto));
     }
 
@@ -94,4 +95,6 @@ public class ProductoController {
     public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
         return ResponseEntity.ok(productoService.generateSome(amount));
     }
+
+   
 } 

@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers("/Auth/**").permitAll()
+            .antMatchers("/Producto").permitAll()
             .anyRequest().authenticated()
             .and().cors().and() 
             .apply(jwtConfigurer);

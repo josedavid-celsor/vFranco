@@ -50,14 +50,15 @@ public class TipoProductoEntity {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
+/* 
     public List<ProductoEntity> getProductos() {
         return productos;
-    }
+    } */
 
-    public void setProductos(List<ProductoEntity> productos) {
+   /*  public void setProductos(List<ProductoEntity> productos) {
         this.productos = productos;
-    }
+    } */
 
     
 }

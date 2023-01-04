@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
+import com.vFranco.vFranco.entity.TipoProductoEntity;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> {
@@ -17,8 +18,8 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> 
 
     Page<ProductoEntity> findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(String nombre, String codigo, Pageable oPageable);
 
-    Page<ProductoEntity> findByTipoProducto(Long id_tipoproducto, Pageable oPageable);
+    Page<ProductoEntity> findByTipoProducto(TipoProductoEntity id_tipoproducto, Pageable oPageable);
 
     @Query(value = "SELECT * FROM producto WHERE id_tipoproducto = ?1 AND (nombre LIKE  %?2% OR codigo LIKE %?3%)", nativeQuery = true)
-    Page<ProductoEntity> findByTipoProductoAndNombreOrCodigo(long id_tipoproducto, String nombre, String codigo, Pageable oPageable);
+    Page<ProductoEntity> findByTipoProductoAndNombreOrCodigo(TipoProductoEntity id_tipoproducto, String nombre, String codigo, Pageable oPageable);
 } 

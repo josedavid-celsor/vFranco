@@ -1,5 +1,8 @@
 package com.vFranco.vFranco.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,8 +50,15 @@ public class UsuarioEntity {
     @JoinColumn(name = "authority_id")
     private AuthoritysEntity authority;
 
-    public UsuarioEntity() {
+    @OneToMany(mappedBy = "usuario")
+    private final List<CarritoEntity> carritos;
 
+    @OneToMany(mappedBy = "usuario")
+    private final List<FacturaEntity> facturas;
+
+    public UsuarioEntity() {
+        this.carritos = new ArrayList<>();
+        this.facturas = new ArrayList<>();
     }
 
     public UsuarioEntity(Long id, String dni, String nombre, String apellido, String apellido2, String email,
@@ -61,6 +72,8 @@ public class UsuarioEntity {
         this.username = username;
         this.password = password;
         this.authority = authority;
+        this.carritos = new ArrayList<>();
+        this.facturas = new ArrayList<>();
     }
 
     public Long getId() {

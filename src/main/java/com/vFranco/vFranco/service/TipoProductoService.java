@@ -63,8 +63,8 @@ public class TipoProductoService {
        
       }
 
-      //Get
-     public TipoProductoEntity get(@PathVariable(value = "id") Long id) {
+    //Get
+    public TipoProductoEntity get(@PathVariable(value = "id") Long id) {
         if (tipoProductoRepository.existsById(id)) {
             return tipoProductoRepository.findById(id).orElseThrow(null);
         } else {
@@ -97,7 +97,7 @@ public TipoProductoEntity generate() {
   String nombre = TIPO[RandomHelper.getRandomInt(0, TIPO.length - 1)] + " " + CARATERISTICA[RandomHelper.getRandomInt(0, CARATERISTICA.length - 1)];
   TipoProductoEntity tipoProductoEntity = new TipoProductoEntity();
   tipoProductoEntity.setNombre(nombre);
-  return tipoProductoEntity;
+  return tipoProductoRepository.save(tipoProductoEntity);
 }
 
 public Long generateSome(@PathVariable(value = "amount") int amount) {
@@ -123,7 +123,7 @@ public Page<TipoProductoEntity> getPage(Pageable oPageable, String strFilter) {
 
 public TipoProductoEntity getOneRandom() {
   List<TipoProductoEntity> listadotipos = tipoProductoRepository.findAll();
-  int iPosicion = RandomHelper.getRandomInt(0,  listadotipos.size());
+  int iPosicion = RandomHelper.getRandomInt(0,  listadotipos.size()-1);
   return listadotipos.get(iPosicion);
 }
 }

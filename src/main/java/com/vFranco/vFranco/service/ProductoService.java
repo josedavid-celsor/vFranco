@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
+import com.vFranco.vFranco.entity.TipoProductoEntity;
 import com.vFranco.vFranco.exception.ResourceNotFoundException;
 import com.vFranco.vFranco.exception.ResourceNotModifiedException;
 import com.vFranco.vFranco.helper.RandomHelper;
@@ -40,6 +41,10 @@ public class ProductoService {
       ProductoEntity producto = new ProductoEntity();
       
       producto.setNombre(createProductoRequest.getNombre());
+      producto.setCodigo(createProductoRequest.getCodigo());
+      producto.setPrecio(createProductoRequest.getPrecio());
+      producto.setCantidad(createProductoRequest.getCantidad());
+      producto.setTipoProducto(createProductoRequest.getTipoProducto());
       return productoRepository.save(producto);
     }
 
@@ -70,9 +75,11 @@ public class ProductoService {
         }
     } else {
         if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
-            oPage = productoRepository.findByTipoProducto(lTipoProducto, oPageable);
+            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.get(lTipoProducto);
+            oPage = productoRepository.findByTipoProducto(tipoProductoEntity, oPageable);
         } else {
-            oPage = productoRepository.findByTipoProductoAndNombreOrCodigo(lTipoProducto, strFilter, strFilter, oPageable);
+            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.get(lTipoProducto);
+            oPage = productoRepository.findByTipoProductoAndNombreOrCodigo(tipoProductoEntity, strFilter, strFilter, oPageable);
         }
     }
     return oPage;
@@ -111,7 +118,7 @@ public ProductoEntity generate() {
     productoEntity.setCantidad(RandomHelper.getRandomInt(0, 100));
     productoEntity.setPrecio(RandomHelper.getRadomDouble(0, 100));
     productoEntity.setTipoProducto(tipoProductoService.getOneRandom());
-    return productoEntity;
+    return productoRepository.save(productoEntity);
   } 
   
 public Long generateSome(@PathVariable(value = "amount") int amount) {
@@ -127,4 +134,5 @@ public Long generateSome(@PathVariable(value = "amount") int amount) {
     int iPosicion = RandomHelper.getRandomInt(0,  listadoproductos.size());
     return listadoproductos.get(iPosicion);
 }
+
 }

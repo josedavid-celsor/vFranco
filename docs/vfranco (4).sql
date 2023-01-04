@@ -64,7 +64,7 @@ CREATE TABLE `compra` (
   `cantidad` int(11) NOT NULL,
   `precio` double NOT NULL,
   `producto_id` bigint(20) NOT NULL,
-  `facatura_id` bigint(20) NOT NULL,
+  `factura_id` bigint(20) NOT NULL,
   `fecha` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
