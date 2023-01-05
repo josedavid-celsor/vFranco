@@ -56,5 +56,9 @@ public class CarritoEntity {
     public void setProducto(ProductoEntity producto) {
         this.producto = producto;
     }
+
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
+    }
  
 }

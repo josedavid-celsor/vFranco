@@ -14,14 +14,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="producto")
+@Table(name = "producto")
 
 public class ProductoEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(name = "codigo")
     private String codigo;
 
@@ -34,6 +34,9 @@ public class ProductoEntity {
     @Column(name = "precio")
     private double precio;
 
+    @Column(name = "image")
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "tipoproducto_id")
     private TipoProductoEntity tipoProducto;
@@ -43,8 +46,6 @@ public class ProductoEntity {
 
     @OneToMany(mappedBy = "producto")
     private final List<CompraEntity> compras;
-
-    
 
     public ProductoEntity() {
         this.carritos = new ArrayList<>();
@@ -91,7 +92,6 @@ public class ProductoEntity {
         this.precio = precio;
     }
 
-
     public TipoProductoEntity getTipoProducto() {
         return tipoProducto;
     }
@@ -100,11 +100,12 @@ public class ProductoEntity {
         this.tipoProducto = tipoProducto;
     }
 
-  
+    public String getImage() {
+        return image;
+    }
 
-   
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-   
-
-    
 }

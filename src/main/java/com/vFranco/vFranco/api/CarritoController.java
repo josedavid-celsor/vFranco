@@ -27,18 +27,18 @@ public class CarritoController {
     private CarritoService carritoService;
 
     @GetMapping("")
-    @PreAuthorize("hasAuthority('cliente')")
+    @PreAuthorize("hasAuthority('cliente') or hasAuthority('admin')")
     public ResponseEntity<List<CarritoEntity>> getCarrito(){
         //Esto se usa para el username
         String username = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(username);
+       
         return ResponseEntity.ok(carritoService.getCarrito(username));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('cliente')")
+    @PreAuthorize("hasAuthority('cliente') or hasAuthority('admin')")
     public ResponseEntity<Void> deleteOne(@PathVariable(value = "id") Long id) {
-        System.out.println(id);
+        
         CarritoEntity carritoEntity = carritoService.getOne(id);
         if(carritoEntity != null){
             carritoService.deleteOneProduct(id);
@@ -50,7 +50,7 @@ public class CarritoController {
     }
 
     @DeleteMapping("")
-    @PreAuthorize("hasAuthority('cliente')")
+    @PreAuthorize("hasAuthority('cliente') or hasAuthority('admin')")
     public ResponseEntity<Void> deleteAll() {
         String username = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         carritoService.deleteCarrito(username);
@@ -58,10 +58,17 @@ public class CarritoController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('cliente')")
+    @PreAuthorize("hasAuthority('cliente') or hasAuthority('admin')")
     public ResponseEntity<Void> compra() {
         String username = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         carritoService.buyCarrito(username);
         return ResponseEntity.ok().build();  
+    }
+
+    @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('cliente') or hasAuthority('admin')")
+    public ResponseEntity<CarritoEntity> insert(@PathVariable(value = "id") Long id) {
+        String username = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return  ResponseEntity.ok(carritoService.insert(username, id));  
     }
 }

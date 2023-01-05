@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.vFranco.vFranco.entity.CarritoEntity;
 import com.vFranco.vFranco.entity.CompraEntity;
 import com.vFranco.vFranco.entity.FacturaEntity;
+import com.vFranco.vFranco.entity.ProductoEntity;
 import com.vFranco.vFranco.entity.UsuarioEntity;
 import com.vFranco.vFranco.exception.ResourceNotModifiedException;
 import com.vFranco.vFranco.repository.CarritoRepository;
@@ -22,7 +23,7 @@ public class CarritoService {
     @Autowired
     CarritoRepository carritoRepository;
     @Autowired
-    ProductoRepository productoRepository;
+    ProductoService productoService;
     @Autowired
     UsuarioService usuarioService;
     @Autowired
@@ -61,7 +62,6 @@ public class CarritoService {
     public void buyCarrito(String username){
         UsuarioEntity usuarioEntity =usuarioService.findbyUsername(username);
         List<CarritoEntity> listCarrito =  this.getCarrito(usuarioEntity.getUsername());
-        List<CompraEntity> listaCompra = new ArrayList<>();
         FacturaEntity facturaEntity = new FacturaEntity();
         facturaEntity.setFecha(LocalDateTime.now());
         facturaEntity.setUsuario(usuarioEntity);
@@ -80,5 +80,20 @@ public class CarritoService {
         this.deleteCarrito(username);
         facturaEntityBDD.setTotalPrecio(totalPagado);
         facturaService.save(facturaEntityBDD);
+    }
+
+    public CarritoEntity insert(String username, Long idProducto){
+        UsuarioEntity usuarioEntity = usuarioService.findbyUsername(username);
+        ProductoEntity productoEntity = productoService.get(idProducto);
+        CarritoEntity carritoEntity = carritoRepository.findByProductoAndUsuario(productoEntity, usuarioEntity);
+        if(carritoEntity != null){
+            carritoEntity.setCantidad(carritoEntity.getCantidad()+1);  
+        }else{
+            carritoEntity = new CarritoEntity();
+            carritoEntity.setProducto(productoEntity);
+            carritoEntity.setCantidad(1);
+            carritoEntity.setUsuario(usuarioEntity);
+        }
+        return carritoRepository.save(carritoEntity);
     }
 }

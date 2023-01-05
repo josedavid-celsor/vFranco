@@ -1,5 +1,8 @@
 package com.vFranco.vFranco.api;
 
+
+import java.io.IOException;
+
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
+import com.vFranco.vFranco.helper.FileUploadUtil;
 import com.vFranco.vFranco.request.CreateProductoRequest;
 import com.vFranco.vFranco.service.ProductoService;
 
@@ -35,12 +41,19 @@ public class ProductoController {
     
     @PostMapping("/")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<?> createProducto(@RequestBody CreateProductoRequest createProductoRequest){
+    public ResponseEntity<?> createProducto(@RequestBody CreateProductoRequest createProductoRequest, @RequestParam ("image") MultipartFile multipartFile){
         if(productoService.existByName(createProductoRequest.getNombre())){
-
+            
             return ResponseEntity.badRequest().body("name is already taken");
           }
-
+          String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            System.out.println(fileName);
+            try {
+                FileUploadUtil.saveFile("fotos/", fileName, multipartFile);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         return ResponseEntity.ok(productoService.creaProducto(createProductoRequest));
 
     }
