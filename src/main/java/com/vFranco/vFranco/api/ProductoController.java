@@ -2,26 +2,25 @@ package com.vFranco.vFranco.api;
 
 
 import java.io.IOException;
+import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vFranco.vFranco.service.FilesStorageService;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
@@ -38,24 +37,42 @@ public class ProductoController {
     
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private FilesStorageService filesStorageService;
     
-    @PostMapping("/")
-    @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<?> createProducto(@RequestBody CreateProductoRequest createProductoRequest, @RequestParam ("image") MultipartFile multipartFile){
+    @PostMapping(value="/",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> createProducto(@RequestPart("producto") String producto, @RequestPart ("images") List<MultipartFile> multipartFiles) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        CreateProductoRequest createProductoRequest = objectMapper.readValue(producto, CreateProductoRequest.class);
         if(productoService.existByName(createProductoRequest.getNombre())){
             
             return ResponseEntity.badRequest().body("name is already taken");
           }
-          String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            System.out.println(fileName);
-            try {
-                FileUploadUtil.saveFile("fotos/", fileName, multipartFile);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        return ResponseEntity.ok(productoService.creaProducto(createProductoRequest));
+        String fotos = "";
+        for(MultipartFile file : multipartFiles){
 
+            filesStorageService.save(file);
+            fotos+=file.getOriginalFilename()+"-";
+        }
+        //Borramos el último caracter concatenador
+        fotos = fotos.substring(0, fotos.length() - 1);
+
+
+        ProductoEntity productoEntity = productoService.creaProducto(createProductoRequest,fotos);
+
+
+        return ResponseEntity.ok(productoEntity);
+
+    }
+
+    @GetMapping("/files/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+        Resource file = filesStorageService.load(filename);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
     @PutMapping("/{id}")
@@ -88,7 +105,7 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.get(id));
     }
 
-    @GetMapping("")
+    @GetMapping("/filtros")
     public ResponseEntity<Page<ProductoEntity>> getPage(
             @ParameterObject @PageableDefault(page = 0, size = 5, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,

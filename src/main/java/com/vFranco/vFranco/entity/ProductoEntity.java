@@ -34,8 +34,8 @@ public class ProductoEntity {
     @Column(name = "precio")
     private double precio;
 
-    @Column(name = "image")
-    private String image;
+    @Column(name = "images")
+    private String images;
 
     @ManyToOne
     @JoinColumn(name = "tipoproducto_id")
@@ -63,6 +63,8 @@ public class ProductoEntity {
     public String getCodigo() {
         return codigo;
     }
+
+
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
@@ -100,12 +102,12 @@ public class ProductoEntity {
         this.tipoProducto = tipoProducto;
     }
 
-    public String getImage() {
-        return image;
+    public String getImages() {
+        return images;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImages(String images) {
+        this.images = images;
     }
 
 }

@@ -3,9 +3,13 @@ package com.vFranco.vFranco.request;
 import com.vFranco.vFranco.entity.TipoProductoEntity;
 
 public class CreateProductoRequest {
+
+    private int id;
     
     private String codigo;
     private String nombre;
+
+
     private int cantidad;
     private double precio;
     private TipoProductoEntity tipoProducto;
@@ -40,6 +44,12 @@ public class CreateProductoRequest {
     public void setTipoProducto(TipoProductoEntity tipoProducto) {
         this.tipoProducto = tipoProducto;
     }
-    
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
