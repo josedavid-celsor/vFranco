@@ -36,7 +36,7 @@ public class ProductoService {
         this.productoRepository = productoRepository;
     }
 
-    public ProductoEntity creaProducto(CreateProductoRequest createProductoRequest){
+    public ProductoEntity creaProducto(CreateProductoRequest createProductoRequest, String fotos){
       
       ProductoEntity producto = new ProductoEntity();
       
@@ -45,6 +45,7 @@ public class ProductoService {
       producto.setPrecio(createProductoRequest.getPrecio());
       producto.setCantidad(createProductoRequest.getCantidad());
       producto.setTipoProducto(createProductoRequest.getTipoProducto());
+      producto.setImages(fotos);
       return productoRepository.save(producto);
     }
 
