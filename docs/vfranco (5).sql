@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-12-2022 a las 13:26:23
+-- Tiempo de generación: 09-01-2023 a las 21:48:13
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.1.12
 
@@ -49,8 +49,8 @@ INSERT INTO `authoritys` (`id`, `nombre`) VALUES
 CREATE TABLE `carrito` (
   `id` bigint(20) NOT NULL,
   `cantidad` int(11) NOT NULL,
-  `producto_id` int(11) NOT NULL,
-  `factura_id` int(11) NOT NULL
+  `producto_id` bigint(20) NOT NULL,
+  `usuario_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -64,8 +64,7 @@ CREATE TABLE `compra` (
   `cantidad` int(11) NOT NULL,
   `precio` double NOT NULL,
   `producto_id` bigint(20) NOT NULL,
-  `factura_id` bigint(20) NOT NULL,
-  `fecha` datetime NOT NULL
+  `factura_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -78,8 +77,19 @@ CREATE TABLE `factura` (
   `id` bigint(20) NOT NULL,
   `fecha` datetime NOT NULL,
   `iva` int(10) NOT NULL,
-  `pagado` tinyint(1) NOT NULL
+  `usuario_id` bigint(20) NOT NULL,
+  `total_precio` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `factura`
+--
+
+INSERT INTO `factura` (`id`, `fecha`, `iva`, `usuario_id`, `total_precio`) VALUES
+(1, '2023-01-03 15:09:29', 0, 9, 0),
+(4, '2023-01-03 15:13:20', 0, 9, 262.18),
+(5, '2023-01-05 13:33:16', 0, 9, 0),
+(6, '2023-01-05 14:12:36', 0, 7, 688.0500000000001);
 
 -- --------------------------------------------------------
 
@@ -93,8 +103,18 @@ CREATE TABLE `producto` (
   `nombre` varchar(256) NOT NULL,
   `precio` double(10,2) NOT NULL,
   `tipoproducto_id` bigint(10) NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `cantidad` int(11) NOT NULL,
+  `images` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`id`, `codigo`, `nombre`, `precio`, `tipoproducto_id`, `cantidad`, `images`) VALUES
+(26, 'fdsafdsa5454', 'Celulosa Industrial', 85.13, 61, 45, 'opubwnpvjue.jpeg'),
+(27, '154541fdsafd', 'Ambientadores y desodorantes', 6.14, 59, 78, 'ambientador.jpg'),
+(29, 'fdsafdsa5484848854', 'Ambientadores y desodorantes', 5.10, 59, 64, 'ambientador.jpg');
 
 -- --------------------------------------------------------
 
@@ -112,15 +132,10 @@ CREATE TABLE `tipoproducto` (
 --
 
 INSERT INTO `tipoproducto` (`id`, `nombre`) VALUES
-(57, 'Maquina de Limpieza '),
-(58, 'Productos Químicos Inyección/Extracción'),
 (59, 'Productos Químicos Ambientadores y desodorantes'),
-(60, 'Complementos de Higuiene Ambientadores y desodorantes'),
 (61, 'Celulosas y textiles Celulosa Industrial'),
 (62, 'Productos Químicos Útiles de Limpieza'),
-(63, 'Maquina de Limpieza Inyección/Extracción'),
-(68, 'Maquina de Limpieza Útiles de Limpieza'),
-(69, 'Celulosas y textiles Ambientadores y desodorantes');
+(68, 'Maquina de Limpieza Útiles de Limpieza');
 
 -- --------------------------------------------------------
 
@@ -165,7 +180,9 @@ ALTER TABLE `authoritys`
 -- Indices de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `producto_carrito_fk` (`producto_id`),
+  ADD KEY `usuario_carrito_fk` (`usuario_id`);
 
 --
 -- Indices de la tabla `compra`
@@ -173,13 +190,14 @@ ALTER TABLE `carrito`
 ALTER TABLE `compra`
   ADD PRIMARY KEY (`id`),
   ADD KEY `compra_producto_id_fk` (`producto_id`),
-  ADD KEY `compra_factura_id_fk` (`facatura_id`);
+  ADD KEY `compra_factura_id_fk` (`factura_id`);
 
 --
 -- Indices de la tabla `factura`
 --
 ALTER TABLE `factura`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `factura_usuario_fk` (`usuario_id`);
 
 --
 -- Indices de la tabla `producto`
@@ -215,31 +233,31 @@ ALTER TABLE `authoritys`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoproducto`
 --
 ALTER TABLE `tipoproducto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -252,11 +270,24 @@ ALTER TABLE `usuario`
 --
 
 --
+-- Filtros para la tabla `carrito`
+--
+ALTER TABLE `carrito`
+  ADD CONSTRAINT `producto_carrito_fk` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`),
+  ADD CONSTRAINT `usuario_carrito_fk` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);
+
+--
 -- Filtros para la tabla `compra`
 --
 ALTER TABLE `compra`
-  ADD CONSTRAINT `compra_factura_id_fk` FOREIGN KEY (`facatura_id`) REFERENCES `factura` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `compra_factura_id_fk` FOREIGN KEY (`factura_id`) REFERENCES `factura` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `compra_producto_id_fk` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `factura`
+--
+ALTER TABLE `factura`
+  ADD CONSTRAINT `factura_usuario_fk` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);
 
 --
 -- Filtros para la tabla `producto`
