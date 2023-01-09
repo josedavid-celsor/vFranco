@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FilesStorageService {
 
     private final Path root = Paths.get("uploads");
-
+    private final String[] FOTOS = {"ambientador.jpg", "desengrasante.jpg", "opubwnpvjue.jpeg", "panuelo.jpg"};
 
     public void save(MultipartFile file) {
         try {
@@ -53,6 +54,11 @@ public class FilesStorageService {
         FileSystemUtils.deleteRecursively(root.toFile());
     }
 
+    public void deleteOne(String name) {
+        if(ArrayUtils.indexOf(FOTOS, name) == -1){
+            FileSystemUtils.deleteRecursively(root.resolve(name).toFile());
+        }
+    }
 
     public Stream<Path> loadAll() {
         try {

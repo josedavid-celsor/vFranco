@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vFranco.vFranco.service.FilesStorageService;
 import org.springdoc.api.annotations.ParameterObject;
@@ -75,11 +76,31 @@ public class ProductoController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value="/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<ProductoEntity> update(@RequestBody ProductoEntity productoEntity, @PathVariable(value = "id") Long id) {
+    public ResponseEntity<ProductoEntity> update(@RequestPart("producto") String producto, @RequestPart ("images") List<MultipartFile> multipartFiles, @PathVariable(value = "id") Long id) throws JsonMappingException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProductoEntity productoEntity = objectMapper.readValue(producto, ProductoEntity.class);
         ProductoEntity productoBDDEntity = productoService.get(id);
+        String fotosNuevas = productoBDDEntity.getImages();
         if(productoEntity != null){
+            if(multipartFiles.size() > 0){
+                 //Nos ha enviado fotos, por lo que debemos borrar todas las qu estuvieran antes y subir las nuevas
+                 fotosNuevas = "";
+                 String[] fotos = productoBDDEntity.getImages().split("-");
+                 for(String foto : fotos){
+                     filesStorageService.deleteOne(foto);
+                 }
+                
+                 for(MultipartFile file : multipartFiles){
+                     filesStorageService.save(file);
+                     fotosNuevas+=file.getOriginalFilename()+"-";
+                 }
+                 //Borramos el último caracter concatenador
+                 fotosNuevas = fotosNuevas.substring(0, fotosNuevas.length() - 1);
+
+            }
+            productoEntity.setImages(fotosNuevas);
             return ResponseEntity.ok(productoService.update(productoBDDEntity, productoEntity));
         }else{
             return ResponseEntity.notFound().build();
@@ -92,7 +113,11 @@ public class ProductoController {
     public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
         ProductoEntity productoEntity = productoService.get(id);
         if(productoEntity != null){
+            String[] fotos = productoEntity.getImages().split("-");
             productoService.delete(id);
+            for(String foto : fotos){
+                filesStorageService.deleteOne(foto);
+            }
             return ResponseEntity.ok().build();
         }else{
             return ResponseEntity.notFound().build();

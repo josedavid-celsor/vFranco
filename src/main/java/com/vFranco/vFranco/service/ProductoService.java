@@ -31,6 +31,7 @@ public class ProductoService {
     private final String[] NOMBRE = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza LEWI",  
                                   "Aspiradoras de Polvo"};
     private final String[] CODIGO = {"154541fdsafd","fdsafdsa5454","fdsafdsa5484848854","87481564dsaf"};
+    private final String[] FOTOS = {"ambientador.jpg", "desengrasante.jpg", "opubwnpvjue.jpeg", "panuelo.jpg"};
 
     public ProductoService(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
@@ -93,6 +94,7 @@ public ProductoEntity update(ProductoEntity productoBDDEntity, ProductoEntity pr
     productoBDDEntity.setCodigo(productoEntity.getCodigo());
     productoBDDEntity.setTipoProducto(productoEntity.getTipoProducto());
     productoBDDEntity.setPrecio(productoEntity.getPrecio());
+    productoBDDEntity.setImages(productoEntity.getImages());
     return productoRepository.save(productoBDDEntity);
 }
 
@@ -114,11 +116,13 @@ public ProductoEntity generate() {
     ProductoEntity productoEntity = new ProductoEntity();
     String nombre = NOMBRE[RandomHelper.getRandomInt(0, NOMBRE.length -1)];
     String codigo = CODIGO[RandomHelper.getRandomInt(0, CODIGO.length -1)];
+    String fotos = FOTOS[RandomHelper.getRandomInt(0, CODIGO.length -1)];
     productoEntity.setNombre(nombre);
     productoEntity.setCodigo(codigo);
     productoEntity.setCantidad(RandomHelper.getRandomInt(0, 100));
     productoEntity.setPrecio(RandomHelper.getRadomDouble(0, 100));
     productoEntity.setTipoProducto(tipoProductoService.getOneRandom());
+    productoEntity.setImages(fotos);
     return productoRepository.save(productoEntity);
   } 
   
