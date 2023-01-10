@@ -139,5 +139,7 @@ public Long generateSome(@PathVariable(value = "amount") int amount) {
     int iPosicion = RandomHelper.getRandomInt(0,  listadoproductos.size());
     return listadoproductos.get(iPosicion);
 }
-
+public ProductoEntity save(ProductoEntity productoEntity){
+    return productoRepository.save(productoEntity);
+}
 }

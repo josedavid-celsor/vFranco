@@ -71,11 +71,13 @@ public class CarritoService {
             CompraEntity compraEntity = new CompraEntity();
             Double total = carritoEntity.getProducto().getPrecio()*carritoEntity.getCantidad();
             compraEntity.setCantidad(carritoEntity.getCantidad());
+            carritoEntity.getProducto().setCantidad(carritoEntity.getProducto().getCantidad()-carritoEntity.getCantidad());
             compraEntity.setPrecio(total);
             compraEntity.setFactura(facturaEntityBDD);
             compraEntity.setProducto(carritoEntity.getProducto());
             totalPagado += total;
             compraService.save(compraEntity);
+            productoService.save(compraEntity.getProducto());
         }
         this.deleteCarrito(username);
         facturaEntityBDD.setTotalPrecio(totalPagado);

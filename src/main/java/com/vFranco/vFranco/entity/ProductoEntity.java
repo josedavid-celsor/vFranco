@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "producto")
 
@@ -42,6 +45,7 @@ public class ProductoEntity {
     private TipoProductoEntity tipoProducto;
 
     @OneToMany(mappedBy = "producto")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private final List<CarritoEntity> carritos;
 
     @OneToMany(mappedBy = "producto")

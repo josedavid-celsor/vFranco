@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name="carrito")
 public class CarritoEntity {
@@ -22,6 +25,7 @@ public class CarritoEntity {
     private int cantidad;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     @JoinColumn(name = "producto_id")
     private ProductoEntity producto;
 
