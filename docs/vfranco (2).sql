@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-01-2023 a las 21:48:13
+-- Tiempo de generación: 11-01-2023 a las 13:13:30
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.1.12
 
@@ -89,7 +89,11 @@ INSERT INTO `factura` (`id`, `fecha`, `iva`, `usuario_id`, `total_precio`) VALUE
 (1, '2023-01-03 15:09:29', 0, 9, 0),
 (4, '2023-01-03 15:13:20', 0, 9, 262.18),
 (5, '2023-01-05 13:33:16', 0, 9, 0),
-(6, '2023-01-05 14:12:36', 0, 7, 688.0500000000001);
+(6, '2023-01-05 14:12:36', 0, 7, 688.0500000000001),
+(7, '2023-01-10 21:22:12', 0, 7, 96.36999999999999),
+(8, '2023-01-10 21:35:28', 0, 7, 189.13),
+(9, '2023-01-10 21:35:47', 0, 7, 121.06),
+(13, '2023-01-10 21:42:15', 0, 7, 121.06);
 
 -- --------------------------------------------------------
 
@@ -112,9 +116,7 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id`, `codigo`, `nombre`, `precio`, `tipoproducto_id`, `cantidad`, `images`) VALUES
-(26, 'fdsafdsa5454', 'Celulosa Industrial', 85.13, 61, 45, 'opubwnpvjue.jpeg'),
-(27, '154541fdsafd', 'Ambientadores y desodorantes', 6.14, 59, 78, 'ambientador.jpg'),
-(29, 'fdsafdsa5484848854', 'Ambientadores y desodorantes', 5.10, 59, 64, 'ambientador.jpg');
+(36, 'fdsafdsa5454', 'Aspiradoras de Polvo', 1.88, 99, 34, 'panuelo.jpg');
 
 -- --------------------------------------------------------
 
@@ -132,10 +134,8 @@ CREATE TABLE `tipoproducto` (
 --
 
 INSERT INTO `tipoproducto` (`id`, `nombre`) VALUES
-(59, 'Productos Químicos Ambientadores y desodorantes'),
-(61, 'Celulosas y textiles Celulosa Industrial'),
-(62, 'Productos Químicos Útiles de Limpieza'),
-(68, 'Maquina de Limpieza Útiles de Limpieza');
+(95, 'Productos Químicos'),
+(99, 'Complementos de Higuiene');
 
 -- --------------------------------------------------------
 
@@ -233,31 +233,31 @@ ALTER TABLE `authoritys`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoproducto`
 --
 ALTER TABLE `tipoproducto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -273,8 +273,8 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  ADD CONSTRAINT `producto_carrito_fk` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`),
-  ADD CONSTRAINT `usuario_carrito_fk` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);
+  ADD CONSTRAINT `producto_carrito_fk` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `usuario_carrito_fk` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `compra`
@@ -293,7 +293,7 @@ ALTER TABLE `factura`
 -- Filtros para la tabla `producto`
 --
 ALTER TABLE `producto`
-  ADD CONSTRAINT `producto_tipoproducto_id_fk` FOREIGN KEY (`tipoproducto_id`) REFERENCES `tipoproducto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `producto_tipoproducto_id_fk` FOREIGN KEY (`tipoproducto_id`) REFERENCES `tipoproducto` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuario`
