@@ -5,7 +5,7 @@ import com.vFranco.vFranco.entity.TipoProductoEntity;
 public class CreateSTPRequest {
     String nombre;
     String codigo;
-    private TipoProductoEntity TipoProducto;
+    private TipoProductoEntity tipoProducto;
 
     public String getNombre() {
         return nombre;
@@ -24,12 +24,8 @@ public class CreateSTPRequest {
     }
 
     public TipoProductoEntity getTipoProducto() {
-        return TipoProducto;
-    }
-
-    public void setTipoProducto(TipoProductoEntity tipoProducto) {
-        TipoProducto = tipoProducto;
-    }
+        return tipoProducto;
+    }  
     
     
 }

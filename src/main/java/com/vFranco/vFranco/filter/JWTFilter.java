@@ -34,7 +34,6 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getServletPath();
         if(path.equals("/Auth/token") || path.equals("/Auth/register") || path.startsWith("/Producto/files") || path.startsWith("/Producto/filtros")){
-            System.out.println("permitimos");
             filterChain.doFilter(request, response);
         }else{
             String jwt = resolveToken(request);

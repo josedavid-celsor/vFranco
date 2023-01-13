@@ -49,8 +49,20 @@ public class SubTipoProductoEntity {
         this.nombre = nombre;
     }
 
+
     public TipoProductoEntity getTipoProducto() {
         return tipoProducto;
+    }
+    public void setTipoProducto(TipoProductoEntity tipoProducto) {
+        this.tipoProducto = tipoProducto;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     
