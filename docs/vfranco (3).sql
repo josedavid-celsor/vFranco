@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-01-2023 a las 13:13:30
+-- Tiempo de generación: 13-01-2023 a las 12:58:48
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.1.12
 
@@ -93,7 +93,8 @@ INSERT INTO `factura` (`id`, `fecha`, `iva`, `usuario_id`, `total_precio`) VALUE
 (7, '2023-01-10 21:22:12', 0, 7, 96.36999999999999),
 (8, '2023-01-10 21:35:28', 0, 7, 189.13),
 (9, '2023-01-10 21:35:47', 0, 7, 121.06),
-(13, '2023-01-10 21:42:15', 0, 7, 121.06);
+(13, '2023-01-10 21:42:15', 0, 7, 121.06),
+(14, '2023-01-13 11:53:28', 0, 7, 1.88);
 
 -- --------------------------------------------------------
 
@@ -106,17 +107,23 @@ CREATE TABLE `producto` (
   `codigo` varchar(256) NOT NULL,
   `nombre` varchar(256) NOT NULL,
   `precio` double(10,2) NOT NULL,
-  `tipoproducto_id` bigint(10) NOT NULL,
+  `subtipiproducto_id` bigint(20) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `images` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `producto`
+-- Estructura de tabla para la tabla `subtipoproducto`
 --
 
-INSERT INTO `producto` (`id`, `codigo`, `nombre`, `precio`, `tipoproducto_id`, `cantidad`, `images`) VALUES
-(36, 'fdsafdsa5454', 'Aspiradoras de Polvo', 1.88, 99, 34, 'panuelo.jpg');
+CREATE TABLE `subtipoproducto` (
+  `id` bigint(20) NOT NULL,
+  `tipoproducto_id` bigint(20) NOT NULL,
+  `nombre` varchar(256) NOT NULL,
+  `codigo` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -126,16 +133,17 @@ INSERT INTO `producto` (`id`, `codigo`, `nombre`, `precio`, `tipoproducto_id`, `
 
 CREATE TABLE `tipoproducto` (
   `id` bigint(20) NOT NULL,
-  `nombre` varchar(256) NOT NULL
+  `nombre` varchar(256) NOT NULL,
+  `codigo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `tipoproducto`
 --
 
-INSERT INTO `tipoproducto` (`id`, `nombre`) VALUES
-(95, 'Productos Químicos'),
-(99, 'Complementos de Higuiene');
+INSERT INTO `tipoproducto` (`id`, `nombre`, `codigo`) VALUES
+(95, 'Productos Químicos', ''),
+(99, 'Complementos de Higuiene', '');
 
 -- --------------------------------------------------------
 
@@ -204,7 +212,14 @@ ALTER TABLE `factura`
 --
 ALTER TABLE `producto`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `producto_tipoproducto_id_fk` (`tipoproducto_id`);
+  ADD KEY `producto_tipoproducto_id_fk` (`subtipiproducto_id`);
+
+--
+-- Indices de la tabla `subtipoproducto`
+--
+ALTER TABLE `subtipoproducto`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `subtipo_tipoproductoID_fk` (`tipoproducto_id`);
 
 --
 -- Indices de la tabla `tipoproducto`
@@ -233,25 +248,31 @@ ALTER TABLE `authoritys`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT de la tabla `subtipoproducto`
+--
+ALTER TABLE `subtipoproducto`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoproducto`
@@ -293,7 +314,13 @@ ALTER TABLE `factura`
 -- Filtros para la tabla `producto`
 --
 ALTER TABLE `producto`
-  ADD CONSTRAINT `producto_tipoproducto_id_fk` FOREIGN KEY (`tipoproducto_id`) REFERENCES `tipoproducto` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `producto_subtipoproducto_id_fk` FOREIGN KEY (`subtipiproducto_id`) REFERENCES `subtipoproducto` (`id`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `subtipoproducto`
+--
+ALTER TABLE `subtipoproducto`
+  ADD CONSTRAINT `subtipo_tipoproductoID_fk` FOREIGN KEY (`tipoproducto_id`) REFERENCES `tipoproducto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuario`
