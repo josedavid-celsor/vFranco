@@ -29,6 +29,8 @@ public class TipoProductoService {
                                   "Maquina de Limpieza"};
     private final String[] CARATERISTICA = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza", 
                                           "Inyección/Extracción"};
+
+    private final String[] CODIGO = {"CELULOSAYTEXTILES", "PRODUCTOSQUIMICOS", "COMPLEMENTOSDEHIGUIENE", "MAQUINADELIMPIEZA"};
     //Constructor
     public TipoProductoService(TipoProductoRepository tipoProductoRepository) {
       this.tipoProductoRepository = tipoProductoRepository;
@@ -50,12 +52,22 @@ public class TipoProductoService {
         TipoProductoEntity tipoProducto = new TipoProductoEntity();
         
         tipoProducto.setNombre(createTPRequest.getNombre());
+        tipoProducto.setCodigo(createTPRequest.getCodigo());
         return tipoProductoRepository.save(tipoProducto);
       }
 
     public boolean existByName(String name){
         try{
           return tipoProductoRepository.existsByName(name);
+        }catch(Exception e){
+          return false;
+        }
+       
+      }
+
+      public boolean existByCodigo(String codigo){
+        try{
+          return tipoProductoRepository.existsByCodigo(codigo);
         }catch(Exception e){
           return false;
         }
@@ -89,13 +101,16 @@ public class TipoProductoService {
   //Update
   public TipoProductoEntity update(TipoProductoEntity tipoProductoBDDEntity, TipoProductoEntity tipoProductoEntity) {
     tipoProductoBDDEntity.setNombre(tipoProductoEntity.getNombre());
+    tipoProductoBDDEntity.setCodigo(tipoProductoEntity.getCodigo());
     return tipoProductoRepository.save(tipoProductoBDDEntity);
 }
 
 public TipoProductoEntity generate() {
   String nombre = TIPO[RandomHelper.getRandomInt(0, TIPO.length - 1)] + " " + CARATERISTICA[RandomHelper.getRandomInt(0, CARATERISTICA.length - 1)];
+  String codigo = CODIGO[RandomHelper.getRandomInt(0, CODIGO.length - 1)] + " " + CARATERISTICA[RandomHelper.getRandomInt(0, CARATERISTICA.length - 1)];
   TipoProductoEntity tipoProductoEntity = new TipoProductoEntity();
   tipoProductoEntity.setNombre(nombre);
+  tipoProductoEntity.setCodigo(codigo);
   return tipoProductoRepository.save(tipoProductoEntity);
 }
 

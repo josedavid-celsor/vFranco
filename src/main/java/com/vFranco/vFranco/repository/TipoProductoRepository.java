@@ -1,5 +1,7 @@
 package com.vFranco.vFranco.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,5 +19,6 @@ public interface TipoProductoRepository extends JpaRepository<TipoProductoEntity
 
     public Page<TipoProductoEntity> findByNombreIgnoreCaseContaining(String strFilter, Pageable oPageable);
 
-    
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN 'true' ELSE 'false' END FROM SubTipoProductoEntity u WHERE u.codigo = :codigo")
+    boolean existsByCodigo(@Param("codigo") String codigo);
 }

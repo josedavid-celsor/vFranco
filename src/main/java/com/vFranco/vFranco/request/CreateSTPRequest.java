@@ -1,8 +1,11 @@
 package com.vFranco.vFranco.request;
 
-public class CreateTPRequest {
+import com.vFranco.vFranco.entity.TipoProductoEntity;
+
+public class CreateSTPRequest {
     String nombre;
     String codigo;
+    private TipoProductoEntity TipoProducto;
 
     public String getNombre() {
         return nombre;
@@ -18,6 +21,14 @@ public class CreateTPRequest {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public TipoProductoEntity getTipoProducto() {
+        return TipoProducto;
+    }
+
+    public void setTipoProducto(TipoProductoEntity tipoProducto) {
+        TipoProducto = tipoProducto;
     }
     
     

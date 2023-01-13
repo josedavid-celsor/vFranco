@@ -22,6 +22,9 @@ public class TipoProductoEntity {
     @Column(name = "nombre")
     private String nombre;
 
+    @Column(name = "codigo")
+    private String codigo;
+
     @OneToMany(mappedBy = "tipoProducto")
     private List<SubTipoProductoEntity> subTipoProducto;
 
@@ -50,6 +53,15 @@ public class TipoProductoEntity {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+    
     
 /* 
     public List<ProductoEntity> getProductos() {
