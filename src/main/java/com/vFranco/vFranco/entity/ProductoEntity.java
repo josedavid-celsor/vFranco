@@ -41,8 +41,8 @@ public class ProductoEntity {
     private String images;
 
     @ManyToOne
-    @JoinColumn(name = "tipoproducto_id")
-    private TipoProductoEntity tipoProducto;
+    @JoinColumn(name = "subtipoproducto_id")
+    private SubTipoProductoEntity subTipoProducto;
 
     @OneToMany(mappedBy = "producto")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
@@ -50,6 +50,7 @@ public class ProductoEntity {
 
     @OneToMany(mappedBy = "producto")
     private final List<CompraEntity> compras;
+
 
     public ProductoEntity() {
         this.carritos = new ArrayList<>();
@@ -98,12 +99,12 @@ public class ProductoEntity {
         this.precio = precio;
     }
 
-    public TipoProductoEntity getTipoProducto() {
-        return tipoProducto;
+    public SubTipoProductoEntity getSubTipoProducto() {
+        return subTipoProducto;
     }
 
-    public void setTipoProducto(TipoProductoEntity tipoProducto) {
-        this.tipoProducto = tipoProducto;
+    public void setSubTipoProducto(SubTipoProductoEntity subTipoProducto) {
+        this.subTipoProducto = subTipoProducto;
     }
 
     public String getImages() {
@@ -113,5 +114,7 @@ public class ProductoEntity {
     public void setImages(String images) {
         this.images = images;
     }
+
+
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.data.domain.Pageable;
 import com.vFranco.vFranco.entity.FacturaEntity;
+import com.vFranco.vFranco.entity.UsuarioEntity;
 import com.vFranco.vFranco.exception.ResourceNotFoundException;
 import com.vFranco.vFranco.exception.ResourceNotModifiedException;
 import com.vFranco.vFranco.helper.ValidationHelper;
@@ -53,4 +54,13 @@ public class FacturaService {
             throw new ResourceNotFoundException("id " + id + " not exist");
         }
     }
+
+    public Page<FacturaEntity> getPageByUsuario(Pageable oPageable, String strFilter, UsuarioEntity usuario) {
+        ValidationHelper.validateRPP(oPageable.getPageSize());
+        Page<FacturaEntity> oPage = null;
+        if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+            oPage = facturaRepository.findAllByUsuario(usuario, oPageable);
+        } 
+        return oPage;
+      }
 }

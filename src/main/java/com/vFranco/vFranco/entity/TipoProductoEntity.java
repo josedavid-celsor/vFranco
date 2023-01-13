@@ -23,16 +23,16 @@ public class TipoProductoEntity {
     private String nombre;
 
     @OneToMany(mappedBy = "tipoProducto")
-    private List<ProductoEntity> productos;
+    private List<SubTipoProductoEntity> subTipoProducto;
 
     public TipoProductoEntity(){
         
     }
 
-    public TipoProductoEntity(Long id, String nombre, List<ProductoEntity> productos) {
+    public TipoProductoEntity(Long id, String nombre, List<SubTipoProductoEntity> subTipoProducto) {
         this.id = id;
         this.nombre = nombre;
-        this.productos = productos;
+        this.subTipoProducto = subTipoProducto;
     }
 
     public Long getId() {

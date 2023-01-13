@@ -18,6 +18,7 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> 
 
     Page<ProductoEntity> findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(String nombre, String codigo, Pageable oPageable);
 
+    @Query(value = "SELECT * FROM producto WHERE subtipoproducto_id IN (SELECT id FROM subtipoproducto WHERE tipoproducto_id IN (SELECT id FROM tipoproducto WHERE id = ?1))", nativeQuery = true)
     Page<ProductoEntity> findByTipoProducto(TipoProductoEntity id_tipoproducto, Pageable oPageable);
 
     @Query(value = "SELECT * FROM producto WHERE id_tipoproducto = ?1 AND (nombre LIKE  %?2% OR codigo LIKE %?3%)", nativeQuery = true)

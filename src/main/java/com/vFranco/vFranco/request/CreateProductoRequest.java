@@ -1,5 +1,6 @@
 package com.vFranco.vFranco.request;
 
+import com.vFranco.vFranco.entity.SubTipoProductoEntity;
 import com.vFranco.vFranco.entity.TipoProductoEntity;
 
 public class CreateProductoRequest {
@@ -12,7 +13,7 @@ public class CreateProductoRequest {
 
     private int cantidad;
     private double precio;
-    private TipoProductoEntity tipoProducto;
+    private SubTipoProductoEntity subTipoProducto;
 
     public String getCodigo() {
         return codigo;
@@ -38,11 +39,11 @@ public class CreateProductoRequest {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-    public TipoProductoEntity getTipoProducto() {
-        return tipoProducto;
+    public SubTipoProductoEntity getSubTipoProducto() {
+        return subTipoProducto;
     }
-    public void setTipoProducto(TipoProductoEntity tipoProducto) {
-        this.tipoProducto = tipoProducto;
+    public void setSubTipoProducto(SubTipoProductoEntity subTipoProducto) {
+        this.subTipoProducto = subTipoProducto;
     }
 
     public int getId() {

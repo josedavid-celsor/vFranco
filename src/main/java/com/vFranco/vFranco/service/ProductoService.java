@@ -27,6 +27,8 @@ public class ProductoService {
     ProductoRepository productoRepository;
     @Autowired
     TipoProductoService tipoProductoService;
+    @Autowired
+    SubTipoProductoService subtipoProductoService;
 
     private final String[] NOMBRE = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de Limpieza LEWI",  
                                   "Aspiradoras de Polvo"};
@@ -45,7 +47,7 @@ public class ProductoService {
       producto.setCodigo(createProductoRequest.getCodigo());
       producto.setPrecio(createProductoRequest.getPrecio());
       producto.setCantidad(createProductoRequest.getCantidad());
-      producto.setTipoProducto(createProductoRequest.getTipoProducto());
+      producto.setSubTipoProducto(createProductoRequest.getSubTipoProducto());
       producto.setImages(fotos);
       return productoRepository.save(producto);
     }
@@ -92,7 +94,7 @@ public ProductoEntity update(ProductoEntity productoBDDEntity, ProductoEntity pr
     productoBDDEntity.setNombre(productoEntity.getNombre());
     productoBDDEntity.setCantidad(productoEntity.getCantidad());
     productoBDDEntity.setCodigo(productoEntity.getCodigo());
-    productoBDDEntity.setTipoProducto(productoEntity.getTipoProducto());
+    productoBDDEntity.setSubTipoProducto(productoEntity.getSubTipoProducto());
     productoBDDEntity.setPrecio(productoEntity.getPrecio());
     productoBDDEntity.setImages(productoEntity.getImages());
     return productoRepository.save(productoBDDEntity);
@@ -121,8 +123,8 @@ public ProductoEntity generate() {
     productoEntity.setCodigo(codigo);
     productoEntity.setCantidad(RandomHelper.getRandomInt(0, 100));
     productoEntity.setPrecio(RandomHelper.getRadomDouble(0, 100));
-    productoEntity.setTipoProducto(tipoProductoService.getOneRandom());
     productoEntity.setImages(fotos);
+    productoEntity.setSubTipoProducto(subtipoProductoService.getOneRandom());
     return productoRepository.save(productoEntity);
   } 
   

@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vFranco.vFranco.entity.FacturaEntity;
+import com.vFranco.vFranco.entity.UsuarioEntity;
+import com.vFranco.vFranco.provider.JwtProvider;
 import com.vFranco.vFranco.service.FacturaService;
+import com.vFranco.vFranco.service.UsuarioService;
 
 @RestController
 @Controller
@@ -27,12 +30,24 @@ public class FacturaController {
     @Autowired
     private FacturaService facturaService;
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
+    @Autowired
+    private UsuarioService usuarioService;
+    //Con esto dos metodos que hemos creado, si el usuario conectado es admin, debera recuperar todas las facturas de la aplicación pero si no es admin, solo las suyas
     @GetMapping("")
-    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('cliente') or hasAuthority('admin')")
     public ResponseEntity<Page<FacturaEntity>> getPage(
             @ParameterObject @PageableDefault(page = 0, size = 5, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "filter", required = false) String strFilter) {
-        return new ResponseEntity<Page<FacturaEntity>>(facturaService.getPage(oPageable, strFilter), HttpStatus.OK);
+            @RequestParam(name = "filter", required = false) String strFilter){
+                if(jwtProvider.isAdminConnected()){
+                    return new ResponseEntity<Page<FacturaEntity>>(facturaService.getPage(oPageable, strFilter), HttpStatus.OK);
+                }else{
+                    String username = jwtProvider.getUsernameConnected();
+                    UsuarioEntity usuario = this.usuarioService.findbyUsername(username);
+                    return new ResponseEntity<Page<FacturaEntity>>(facturaService.getPageByUsuario(oPageable, strFilter, usuario), HttpStatus.OK);
+                }
     }
 
     @DeleteMapping("/{id}")

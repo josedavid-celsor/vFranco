@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
@@ -79,6 +80,8 @@ public class JwtProvider {
     }
     return false;
   }
+
+  //Recibe un token lo procesa y devuelve si el rol es de admin
   public boolean validatejwtAdmin(String jwtAdmin) {
     
     if(!validatejwt(jwtAdmin)){
@@ -86,6 +89,20 @@ public class JwtProvider {
     }
     Authentication user = getAuthentication(jwtAdmin);
     GrantedAuthority authority = user.getAuthorities().iterator().next();
+    String role = authority.getAuthority();
+    
+    return "admin".equals(role);
+  }
+
+  //Devuelve el username del usuario conectado
+  public String getUsernameConnected() {    
+    return (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  }
+
+  //En el caso de que el usuario este conectado es un admin devuleve true, si no es false
+  public boolean isAdminConnected(){
+    Authentication authenticationUser = SecurityContextHolder.getContext().getAuthentication();
+    GrantedAuthority authority = authenticationUser.getAuthorities().iterator().next();
     String role = authority.getAuthority();
     
     return "admin".equals(role);
