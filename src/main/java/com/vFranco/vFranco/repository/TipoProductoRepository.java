@@ -21,4 +21,6 @@ public interface TipoProductoRepository extends JpaRepository<TipoProductoEntity
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN 'true' ELSE 'false' END FROM SubTipoProductoEntity u WHERE u.codigo = :codigo")
     boolean existsByCodigo(@Param("codigo") String codigo);
+
+    public TipoProductoEntity findByCodigo(String codigo);
 }

@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.vFranco.vFranco.entity.SubTipoProductoEntity;
 import com.vFranco.vFranco.entity.TipoProductoEntity;
+import com.vFranco.vFranco.exception.ResourceNotFoundException;
+import com.vFranco.vFranco.exception.ResourceNotModifiedException;
 import com.vFranco.vFranco.helper.RandomHelper;
 import com.vFranco.vFranco.helper.ValidationHelper;
 import com.vFranco.vFranco.repository.SubTipoProductoRepository;
@@ -24,6 +27,11 @@ public class SubTipoProductoService {
     @Autowired
     TipoProductoService tipoProductoService;
 
+    private final String[] NOMBRE = {"Ambientadores y desodorantes", "Celulosa Industrial", "Útiles de limpieza LEWI",  
+                                  "Inyección"};
+
+    private final String[] CODIGO = {"AMBIENTADORESYDESODORANTES", "CELULOSAINDUSTRIAL", "UTILESDELIMPIEZALEWI", "INYECCION"};
+
     public SubTipoProductoEntity creaSubTipoProducto(CreateSTPRequest createSTPRequest){
       SubTipoProductoEntity subTipoProducto = new SubTipoProductoEntity();
       subTipoProducto.setNombre(createSTPRequest.getNombre());
@@ -34,6 +42,29 @@ public class SubTipoProductoService {
 
     public SubTipoProductoService(SubTipoProductoRepository subTipoProductoRepository) {
       this.subTipoProductoRepository = subTipoProductoRepository;
+  }
+
+   //Get
+   public SubTipoProductoEntity get(@PathVariable(value = "id") Long id) {
+    if (subTipoProductoRepository.existsById(id)) {
+        return subTipoProductoRepository.findById(id).orElseThrow(null);
+    } else {
+        throw new ResourceNotFoundException("id " + id + " not exist");
+    }
+  }
+
+    //Delete
+    public Long delete(@PathVariable(value = "id") Long id) {
+      if (subTipoProductoRepository.existsById(id)) {
+        subTipoProductoRepository.deleteById(id);
+          if (subTipoProductoRepository.existsById(id)) {
+              throw new ResourceNotModifiedException("Can't remove register " + id);
+          } else {
+              return id;
+          }
+      } else {
+          return 0L;
+      }
   }
     
     public SubTipoProductoEntity getOneRandom() {
@@ -67,4 +98,21 @@ public class SubTipoProductoService {
       }
       return oPage;
     }
+
+      //Update
+  public SubTipoProductoEntity update(SubTipoProductoEntity subTipoProductoBDDEntity, SubTipoProductoEntity subTipoProductoEntity) {
+    subTipoProductoBDDEntity.setNombre(subTipoProductoEntity.getNombre());
+    subTipoProductoBDDEntity.setCodigo(subTipoProductoEntity.getCodigo());
+    return subTipoProductoRepository.save(subTipoProductoBDDEntity);
+}
+
+public SubTipoProductoEntity generate(Long id) {
+  String nombre = NOMBRE[RandomHelper.getRandomInt(0, NOMBRE.length - 1)];
+  String codigo = CODIGO[RandomHelper.getRandomInt(0, CODIGO.length - 1)];
+  SubTipoProductoEntity subTipoProductoEntity = new SubTipoProductoEntity();
+  subTipoProductoEntity.setNombre(nombre);
+  subTipoProductoEntity.setCodigo(codigo);
+  subTipoProductoEntity.setTipoProducto(tipoProductoService.get(id));
+  return subTipoProductoRepository.save(subTipoProductoEntity);
+}
 }

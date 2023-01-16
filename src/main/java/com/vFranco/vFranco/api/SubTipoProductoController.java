@@ -56,10 +56,10 @@ public class SubTipoProductoController {
 
     } 
 
-    /* @GetMapping("/{id}")
-    public ResponseEntity<SubTipoProductoEntity> getTipoProducto(@PathVariable(value = "id") Long id){
-        return ResponseEntity.ok(tipoProductoService.get(id));
-    }*/
+    @GetMapping("/{id}")
+    public ResponseEntity<SubTipoProductoEntity> getSubTipoProducto(@PathVariable(value = "id") Long id){
+        return ResponseEntity.ok(subTipoProductoService.get(id));
+    }
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('admin')")
@@ -68,13 +68,13 @@ public class SubTipoProductoController {
             @RequestParam(name = "filter", required = false) String strFilter) {
         return new ResponseEntity<Page<SubTipoProductoEntity>>(subTipoProductoService.getPage(oPageable, strFilter), HttpStatus.OK);
     }
-/*
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
-        TipoProductoEntity tipoProductoEntity = tipoProductoService.get(id);
-        if(tipoProductoEntity != null){
-            tipoProductoService.delete(id);
+        SubTipoProductoEntity subTipoProductoEntity = subTipoProductoService.get(id);
+        if(subTipoProductoEntity != null){
+            subTipoProductoService.delete(id);
             return ResponseEntity.ok().build();
         }else{
             return ResponseEntity.notFound().build();
@@ -84,30 +84,25 @@ public class SubTipoProductoController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<TipoProductoEntity> update(@RequestBody TipoProductoEntity tipoProductoEntity, @PathVariable(value = "id") Long id) {
-        TipoProductoEntity tipoProductoBDDEntity = tipoProductoService.get(id);
-        if(tipoProductoEntity != null){
-            return ResponseEntity.ok(tipoProductoService.update(tipoProductoBDDEntity, tipoProductoEntity));
+    public ResponseEntity<SubTipoProductoEntity> update(@RequestBody SubTipoProductoEntity subTipoProductoEntity, @PathVariable(value = "id") Long id) {
+        SubTipoProductoEntity subTipoProductoBDDEntity = subTipoProductoService.get(id);
+        if(subTipoProductoEntity != null){
+            return ResponseEntity.ok(subTipoProductoService.update(subTipoProductoBDDEntity, subTipoProductoEntity));
         }else{
             return ResponseEntity.notFound().build();
         }
         
     }
 
-    @PostMapping("/generate")
+    @PostMapping("/generate/{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<TipoProductoEntity> generate() {
-        return ResponseEntity.ok(tipoProductoService.generate());
+    public ResponseEntity<SubTipoProductoEntity> generate(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(subTipoProductoService.generate(id));
     }
-
-    @PostMapping("/generate/{amount}")
-    @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
-        return ResponseEntity.ok(tipoProductoService.generateSome(amount));
-    } */
 
     @GetMapping("/TipoProducto/{id}")
     public ResponseEntity<List<SubTipoProductoEntity>> getByTipoProducto(@PathVariable(value = "id") Long id){
         return ResponseEntity.ok(subTipoProductoService.getByTipoProducto(id));
     }
+
 }

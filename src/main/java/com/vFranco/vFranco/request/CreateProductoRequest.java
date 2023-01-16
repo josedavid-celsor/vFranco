@@ -14,6 +14,7 @@ public class CreateProductoRequest {
     private int cantidad;
     private double precio;
     private SubTipoProductoEntity subTipoProducto;
+    private TipoProductoEntity TipoProducto;
 
     public String getCodigo() {
         return codigo;
@@ -53,4 +54,12 @@ public class CreateProductoRequest {
     public void setId(int id) {
         this.id = id;
     }
+    public TipoProductoEntity getTipoProducto() {
+        return TipoProducto;
+    }
+    public void setTipoProducto(TipoProductoEntity tipoProducto) {
+        TipoProducto = tipoProducto;
+    }
+
+    
 }

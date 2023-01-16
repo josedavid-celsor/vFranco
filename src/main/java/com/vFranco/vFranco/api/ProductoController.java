@@ -134,9 +134,9 @@ public class ProductoController {
     public ResponseEntity<Page<ProductoEntity>> getPage(
             @ParameterObject @PageableDefault(page = 0, size = 5, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
-            @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
+            @RequestParam(name = "tipoproducto", required = false) String codigo) {
                 
-        return ResponseEntity.ok(productoService.getPage(oPageable, strFilter, lTipoProducto));
+        return ResponseEntity.ok(productoService.getPage(oPageable, strFilter, codigo));
     }
 
     @PostMapping("/generate")

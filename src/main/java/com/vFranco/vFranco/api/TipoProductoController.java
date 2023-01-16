@@ -1,5 +1,7 @@
 package com.vFranco.vFranco.api;
 
+import java.util.List;
+
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -93,5 +95,10 @@ public class TipoProductoController {
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
         return ResponseEntity.ok(tipoProductoService.generateSome(amount));
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<TipoProductoEntity>> getAll(){
+        return ResponseEntity.ok(tipoProductoService.getAll());
     }
 }

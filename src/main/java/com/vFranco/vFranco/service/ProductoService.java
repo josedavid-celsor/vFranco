@@ -68,10 +68,10 @@ public class ProductoService {
       }
   }
 
-  public Page<ProductoEntity> getPage(Pageable oPageable, String strFilter, Long lTipoProducto) {
+  public Page<ProductoEntity> getPage(Pageable oPageable, String strFilter, String codigoProducto) {
     ValidationHelper.validateRPP(oPageable.getPageSize());
     Page<ProductoEntity> oPage = null;
-    if (lTipoProducto == null) {
+    if (codigoProducto == null) {
         if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
             oPage = productoRepository.findAll(oPageable);
         } else {
@@ -79,10 +79,10 @@ public class ProductoService {
         }
     } else {
         if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
-            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.get(lTipoProducto);
+            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.getByCodigo(codigoProducto);
             oPage = productoRepository.findByTipoProducto(tipoProductoEntity, oPageable);
         } else {
-            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.get(lTipoProducto);
+            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.getByCodigo(codigoProducto);
             oPage = productoRepository.findByTipoProductoAndNombreOrCodigo(tipoProductoEntity, strFilter, strFilter, oPageable);
         }
     }
