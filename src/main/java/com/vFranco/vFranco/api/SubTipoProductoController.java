@@ -105,4 +105,8 @@ public class SubTipoProductoController {
         return ResponseEntity.ok(subTipoProductoService.getByTipoProducto(id));
     }
 
+    @GetMapping("/TipoProducto/codigo/{codigo}")
+    public ResponseEntity<List<SubTipoProductoEntity>> getSubTiposProductosByCodigo(@PathVariable(value = "codigo") String codigo){
+        return ResponseEntity.ok(subTipoProductoService.getSubTiposProductosByCodigo(codigo));
+    }
 }

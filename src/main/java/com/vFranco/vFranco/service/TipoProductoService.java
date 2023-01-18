@@ -149,4 +149,8 @@ public class TipoProductoService {
    
   }
 
+  public TipoProductoEntity findByCodigo(String codigo){
+    return tipoProductoRepository.findByCodigo(codigo);
+  }
+
 }

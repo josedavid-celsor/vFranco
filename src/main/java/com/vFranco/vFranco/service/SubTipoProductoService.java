@@ -115,4 +115,9 @@ public SubTipoProductoEntity generate(Long id) {
   subTipoProductoEntity.setTipoProducto(tipoProductoService.get(id));
   return subTipoProductoRepository.save(subTipoProductoEntity);
 }
+
+public List<SubTipoProductoEntity> getSubTiposProductosByCodigo(String codigo){
+  TipoProductoEntity tipoProductoEntity = tipoProductoService.findByCodigo(codigo);
+  return subTipoProductoRepository.findByTipoProducto(tipoProductoEntity);
+}
 }
