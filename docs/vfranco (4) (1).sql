@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-01-2023 a las 12:58:48
+-- Tiempo de generación: 16-01-2023 a las 16:17:33
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.1.12
 
@@ -67,6 +67,14 @@ CREATE TABLE `compra` (
   `factura_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `compra`
+--
+
+INSERT INTO `compra` (`id`, `cantidad`, `precio`, `producto_id`, `factura_id`) VALUES
+(15, 2, 10, 37, 15),
+(16, 2, 155.86, 58, 15);
+
 -- --------------------------------------------------------
 
 --
@@ -86,15 +94,7 @@ CREATE TABLE `factura` (
 --
 
 INSERT INTO `factura` (`id`, `fecha`, `iva`, `usuario_id`, `total_precio`) VALUES
-(1, '2023-01-03 15:09:29', 0, 9, 0),
-(4, '2023-01-03 15:13:20', 0, 9, 262.18),
-(5, '2023-01-05 13:33:16', 0, 9, 0),
-(6, '2023-01-05 14:12:36', 0, 7, 688.0500000000001),
-(7, '2023-01-10 21:22:12', 0, 7, 96.36999999999999),
-(8, '2023-01-10 21:35:28', 0, 7, 189.13),
-(9, '2023-01-10 21:35:47', 0, 7, 121.06),
-(13, '2023-01-10 21:42:15', 0, 7, 121.06),
-(14, '2023-01-13 11:53:28', 0, 7, 1.88);
+(15, '2023-01-16 13:01:05', 0, 7, 165.86);
 
 -- --------------------------------------------------------
 
@@ -107,10 +107,18 @@ CREATE TABLE `producto` (
   `codigo` varchar(256) NOT NULL,
   `nombre` varchar(256) NOT NULL,
   `precio` double(10,2) NOT NULL,
-  `subtipiproducto_id` bigint(20) NOT NULL,
+  `subtipoproducto_id` bigint(20) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `images` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`id`, `codigo`, `nombre`, `precio`, `subtipoproducto_id`, `cantidad`, `images`) VALUES
+(37, 'dsfdsa', 'Aguita con Gas', 5.00, 1, 8, '13r59v59htr8.jpeg'),
+(58, '87481564dsaf', 'Aspiradoras de Polvo', 77.93, 13, 70, 'ambientador.jpg');
 
 -- --------------------------------------------------------
 
@@ -124,6 +132,14 @@ CREATE TABLE `subtipoproducto` (
   `nombre` varchar(256) NOT NULL,
   `codigo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `subtipoproducto`
+--
+
+INSERT INTO `subtipoproducto` (`id`, `tipoproducto_id`, `nombre`, `codigo`) VALUES
+(1, 95, 'Desodorante', 'DESODORANTE'),
+(13, 99, 'Útiles de limpieza LEWI', 'UTILESDELIMPIEZALEWI');
 
 -- --------------------------------------------------------
 
@@ -142,7 +158,7 @@ CREATE TABLE `tipoproducto` (
 --
 
 INSERT INTO `tipoproducto` (`id`, `nombre`, `codigo`) VALUES
-(95, 'Productos Químicos', ''),
+(95, 'Productos Químicos', 'PRODUCTOSQUIMICOS'),
 (99, 'Complementos de Higuiene', '');
 
 -- --------------------------------------------------------
@@ -212,7 +228,7 @@ ALTER TABLE `factura`
 --
 ALTER TABLE `producto`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `producto_tipoproducto_id_fk` (`subtipiproducto_id`);
+  ADD KEY `producto_tipoproducto_id_fk` (`subtipoproducto_id`);
 
 --
 -- Indices de la tabla `subtipoproducto`
@@ -248,37 +264,37 @@ ALTER TABLE `authoritys`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `subtipoproducto`
 --
 ALTER TABLE `subtipoproducto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoproducto`
 --
 ALTER TABLE `tipoproducto`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -314,7 +330,7 @@ ALTER TABLE `factura`
 -- Filtros para la tabla `producto`
 --
 ALTER TABLE `producto`
-  ADD CONSTRAINT `producto_subtipoproducto_id_fk` FOREIGN KEY (`subtipiproducto_id`) REFERENCES `subtipoproducto` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `producto_subtipoproducto_id_fk` FOREIGN KEY (`subtipoproducto_id`) REFERENCES `subtipoproducto` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `subtipoproducto`
