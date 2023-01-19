@@ -120,4 +120,8 @@ public List<SubTipoProductoEntity> getSubTiposProductosByCodigo(String codigo){
   TipoProductoEntity tipoProductoEntity = tipoProductoService.findByCodigo(codigo);
   return subTipoProductoRepository.findByTipoProducto(tipoProductoEntity);
 }
+
+public SubTipoProductoEntity getByCodigo(String codigo){ 
+  return subTipoProductoRepository.findByCodigo(codigo);
+}
 }

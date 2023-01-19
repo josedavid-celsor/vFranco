@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
+import com.vFranco.vFranco.entity.SubTipoProductoEntity;
 import com.vFranco.vFranco.entity.TipoProductoEntity;
 
 @Repository
@@ -21,6 +22,12 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> 
     @Query(value = "SELECT * FROM producto WHERE subtipoproducto_id IN (SELECT id FROM subtipoproducto WHERE tipoproducto_id IN (SELECT id FROM tipoproducto WHERE id = ?1))", nativeQuery = true)
     Page<ProductoEntity> findByTipoProducto(TipoProductoEntity id_tipoproducto, Pageable oPageable);
 
-    @Query(value = "SELECT * FROM producto WHERE id_tipoproducto = ?1 AND (nombre LIKE  %?2% OR codigo LIKE %?3%)", nativeQuery = true)
+    @Query(value = "SELECT * FROM producto WHERE subtipoproducto_id IN (SELECT id FROM subtipoproducto WHERE tipoproducto_id IN (SELECT id FROM tipoproducto WHERE id = ?1)) AND (nombre LIKE  %?2% OR codigo LIKE %?3%)", nativeQuery = true)
     Page<ProductoEntity> findByTipoProductoAndNombreOrCodigo(TipoProductoEntity id_tipoproducto, String nombre, String codigo, Pageable oPageable);
+
+    @Query(value = "SELECT * FROM producto WHERE subtipoproducto_id = ?1 AND (nombre LIKE  %?2% OR codigo LIKE %?3%)", nativeQuery = true)
+    Page<ProductoEntity> findByNombreAndSubTipoProductoOrCodigo(SubTipoProductoEntity subTipoProduct,String nombre, String codigo, Pageable oPageable);
+
+    @Query(value = "SELECT * FROM producto WHERE subtipoproducto_id = ?1", nativeQuery = true)
+    Page<ProductoEntity> findBySubTipoProducto(SubTipoProductoEntity subTipoProduct, Pageable oPageable);
 } 

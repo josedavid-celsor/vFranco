@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
+import com.vFranco.vFranco.entity.SubTipoProductoEntity;
 import com.vFranco.vFranco.entity.TipoProductoEntity;
 import com.vFranco.vFranco.exception.ResourceNotFoundException;
 import com.vFranco.vFranco.exception.ResourceNotModifiedException;
@@ -68,22 +69,30 @@ public class ProductoService {
       }
   }
 
-  public Page<ProductoEntity> getPage(Pageable oPageable, String strFilter, String codigoProducto) {
+  public Page<ProductoEntity> getPage(Pageable oPageable, String strFilter, String codigoTipoProducto, String codigoSubTipo) {
     ValidationHelper.validateRPP(oPageable.getPageSize());
     Page<ProductoEntity> oPage = null;
-    if (codigoProducto == null) {
+    if (codigoSubTipo == null && codigoTipoProducto != null) {
+        if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.getByCodigo(codigoTipoProducto);
+            oPage = productoRepository.findByTipoProducto(tipoProductoEntity ,oPageable);
+        } else {
+            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.getByCodigo(codigoTipoProducto);
+            oPage = productoRepository.findByTipoProductoAndNombreOrCodigo(tipoProductoEntity, strFilter, strFilter, oPageable);
+        }
+    } else if(codigoTipoProducto != null && codigoSubTipo != null) {
+        if(strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()){
+            SubTipoProductoEntity subTipoProductoEntity = this.subtipoProductoService.getByCodigo(codigoSubTipo);
+            oPage = productoRepository.findBySubTipoProducto(subTipoProductoEntity, oPageable);
+        }else{
+            SubTipoProductoEntity subTipoProductoEntity = this.subtipoProductoService.getByCodigo(codigoSubTipo);
+            oPage = productoRepository.findByNombreAndSubTipoProductoOrCodigo(subTipoProductoEntity, strFilter, strFilter, oPageable);
+        }
+    }else{
         if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
             oPage = productoRepository.findAll(oPageable);
         } else {
             oPage = productoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(strFilter, strFilter, oPageable);
-        }
-    } else {
-        if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
-            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.getByCodigo(codigoProducto);
-            oPage = productoRepository.findByTipoProducto(tipoProductoEntity, oPageable);
-        } else {
-            TipoProductoEntity tipoProductoEntity = this.tipoProductoService.getByCodigo(codigoProducto);
-            oPage = productoRepository.findByTipoProductoAndNombreOrCodigo(tipoProductoEntity, strFilter, strFilter, oPageable);
         }
     }
     return oPage;

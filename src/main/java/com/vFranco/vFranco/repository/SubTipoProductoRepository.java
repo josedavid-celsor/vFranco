@@ -25,5 +25,5 @@ public interface SubTipoProductoRepository extends JpaRepository<SubTipoProducto
     
     public Page<SubTipoProductoEntity> findByNombreIgnoreCaseContaining(String strFilter, Pageable oPageable);
 
-    
+    public SubTipoProductoEntity findByCodigo(String codigo);
 }
