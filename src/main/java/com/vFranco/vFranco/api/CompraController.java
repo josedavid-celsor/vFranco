@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.vFranco.vFranco.entity.CompraEntity;
+import com.vFranco.vFranco.entity.UsuarioEntity;
+import com.vFranco.vFranco.provider.JwtProvider;
 import com.vFranco.vFranco.service.CompraService;
+import com.vFranco.vFranco.service.UsuarioService;
 
 @RestController
 @Controller
@@ -20,6 +23,11 @@ public class CompraController {
     @Autowired
     private CompraService compraService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
 
     @GetMapping("/{id}")
@@ -30,7 +38,11 @@ public class CompraController {
    
     @GetMapping("/getAll")
     public ResponseEntity<List<CompraEntity>> getAllByUsuario(){
-        String username = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(compraService.getAllByUsuario(username));
+        if(jwtProvider.isAdminConnected()){
+            return ResponseEntity.ok(compraService.getAll());
+        }else{
+            String username = jwtProvider.getUsernameConnected();
+            return ResponseEntity.ok(compraService.getAllByUsuario(username));
+        }
     }
 }
