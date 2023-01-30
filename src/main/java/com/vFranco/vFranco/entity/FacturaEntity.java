@@ -32,7 +32,7 @@ public class FacturaEntity {
     private double totalPrecio;
 
     @Column(name = "iva")
-    private int iva;
+    private double iva;
 
     @OneToMany(mappedBy = "factura")
     private final List<CompraEntity> compras;
@@ -61,7 +61,7 @@ public class FacturaEntity {
         this.fecha = fecha;
     }
 
-    public int getIva() {
+    public double getIva() {
         return iva;
     }
 

@@ -57,11 +57,11 @@ public class CarritoController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("")
+    @PostMapping("/compra/{id}")
     @PreAuthorize("hasAuthority('cliente') or hasAuthority('admin')")
-    public ResponseEntity<Void> compra() {
+    public ResponseEntity<Void> compra(@PathVariable(value = "id") Long id) {
         String username = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        carritoService.buyCarrito(username);
+        carritoService.buyCarrito(username, id);
         return ResponseEntity.ok().build();  
     }
 

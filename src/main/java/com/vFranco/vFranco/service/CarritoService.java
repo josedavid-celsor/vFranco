@@ -59,17 +59,22 @@ public class CarritoService {
     }
 
     @Transactional
-    public void buyCarrito(String username){
+    public void buyCarrito(String username, Long id){
         UsuarioEntity usuarioEntity =usuarioService.findbyUsername(username);
         List<CarritoEntity> listCarrito =  this.getCarrito(usuarioEntity.getUsername());
         FacturaEntity facturaEntity = new FacturaEntity();
         facturaEntity.setFecha(LocalDateTime.now());
         facturaEntity.setUsuario(usuarioEntity);
+        if(id == 1){
+            facturaEntity.setIva(21);
+        }else{
+            facturaEntity.setIva(7);
+        }
         FacturaEntity facturaEntityBDD = facturaService.save(facturaEntity);
         Double totalPagado = 0D;
         for (CarritoEntity carritoEntity : listCarrito) {
             CompraEntity compraEntity = new CompraEntity();
-            Double total = carritoEntity.getProducto().getPrecio()*carritoEntity.getCantidad();
+            Double total = carritoEntity.getProducto().getPrecio()*carritoEntity.getCantidad() + (carritoEntity.getProducto().getPrecio()*carritoEntity.getCantidad() * (facturaEntity.getIva() / 100));
             compraEntity.setCantidad(carritoEntity.getCantidad());
             carritoEntity.getProducto().setCantidad(carritoEntity.getProducto().getCantidad()-carritoEntity.getCantidad());
             compraEntity.setPrecio(total);
