@@ -22,6 +22,7 @@ import com.vFranco.vFranco.request.RegisterRequest;
 import com.vFranco.vFranco.entity.UsuarioEntity;
 import com.vFranco.vFranco.provider.JwtProvider;
 import com.vFranco.vFranco.service.AuthService;
+import com.vFranco.vFranco.service.EmailService;
 
 
 //Define los end points de la aplicación
@@ -37,6 +38,9 @@ public class AuthConttroller {
 
     @Autowired
     private JwtProvider jwtProvider;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/token")
     public ResponseEntity<UsuarioEntity> generateToken(@RequestBody LoginRequest loginRequest){
@@ -72,6 +76,11 @@ public class AuthConttroller {
             List<GrantedAuthority> authorities = Collections.singletonList((GrantedAuthority) authority);
             String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(usuarioEntity.getUsername(), usuarioEntity.getPassword(), authorities));
             usuarioEntity.setToken(token);
+            // Enviar correo electrónico de confirmación
+                emailService.sendConfirmationEmail(
+                usuarioEntity.getEmail(), 
+                "Confirmación de registro", 
+                "Gracias por registrarte!");
             return ResponseEntity.ok(usuarioEntity);
             
         }catch(Exception e){
