@@ -77,10 +77,10 @@ public class AuthConttroller {
             String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(usuarioEntity.getUsername(), usuarioEntity.getPassword(), authorities));
             usuarioEntity.setToken(token);
             // Enviar correo electrónico de confirmación
-                emailService.sendConfirmationEmail(
+                emailService.sendHtmlEmail(
                 usuarioEntity.getEmail(), 
-                "Confirmación de registro", 
-                "Gracias por registrarte!");
+                usuarioEntity.getToken()
+               );
             return ResponseEntity.ok(usuarioEntity);
             
         }catch(Exception e){
@@ -90,4 +90,9 @@ public class AuthConttroller {
        
     }
 
+    @GetMapping("/verifyMail")
+    public ResponseEntity<Boolean> verifyMail(@RequestParam("token") String token){
+        boolean isValid =jwtProvider.validatejwt(token);
+        return ResponseEntity.ok(isValid);
+    }
 }
