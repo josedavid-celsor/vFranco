@@ -1,6 +1,5 @@
 package com.vFranco.vFranco.api;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,12 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vFranco.vFranco.entity.ProductoEntity;
-import com.vFranco.vFranco.helper.FileUploadUtil;
 import com.vFranco.vFranco.request.CreateProductoRequest;
 import com.vFranco.vFranco.service.ProductoService;
 

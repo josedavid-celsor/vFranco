@@ -1,7 +1,7 @@
 package com.vFranco.vFranco.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -16,7 +16,7 @@ import com.vFranco.vFranco.entity.ProductoEntity;
 import com.vFranco.vFranco.entity.UsuarioEntity;
 import com.vFranco.vFranco.exception.ResourceNotModifiedException;
 import com.vFranco.vFranco.repository.CarritoRepository;
-import com.vFranco.vFranco.repository.ProductoRepository;
+
 
 @Service
 public class CarritoService {
