@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -45,7 +46,15 @@ public class UsuarioEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "newpassword_code")
+    private String newPasswordCode;
+
+    @Transient
     private String token;
+
     @ManyToOne
     @JoinColumn(name = "authority_id")
     private AuthoritysEntity authority;
@@ -156,4 +165,21 @@ public class UsuarioEntity {
         this.token = token;
     }
 
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public String getNewPasswordCode() {
+        return newPasswordCode;
+    }
+
+    public void setNewPasswordCode(String newPasswordCode) {
+        this.newPasswordCode = newPasswordCode;
+    }
+
+    
 }

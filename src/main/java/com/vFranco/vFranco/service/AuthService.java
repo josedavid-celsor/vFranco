@@ -12,20 +12,29 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.vFranco.vFranco.request.LoginRequest;
+import com.vFranco.vFranco.request.RecoverRequest;
 import com.vFranco.vFranco.request.RegisterRequest;
 import com.vFranco.vFranco.entity.AuthoritysEntity;
 import com.vFranco.vFranco.entity.UsuarioEntity;
+import com.vFranco.vFranco.helper.RandomHelper;
 import com.vFranco.vFranco.provider.JwtProvider;
 import com.vFranco.vFranco.repository.UsuarioRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+
+import javax.mail.MessagingException;
 
 @Service
 public class AuthService implements UserDetailsService {
 
   @Autowired
   private UsuarioRepository usuarioRepository;
+
+  
+  @Autowired
+  private EmailService emailService;
 
   org.springframework.security.crypto.password.PasswordEncoder passwordEncoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
   /* BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -72,7 +81,7 @@ public class AuthService implements UserDetailsService {
     return new User(usuario.getUsername(), usuario.getPassword(), authorities);
   }
 
-  public UsuarioEntity register(RegisterRequest registerRequest) {
+  public UsuarioEntity register(RegisterRequest registerRequest, String verification_code) {
 
     UsuarioEntity user = new UsuarioEntity();
     AuthoritysEntity authority = new AuthoritysEntity();
@@ -89,7 +98,7 @@ public class AuthService implements UserDetailsService {
     user.setDni(registerRequest.getDni());
     user.setPassword(encryptedPassword);
     user.setAuthority(authority);
-
+    user.setVerificationCode(verification_code);
     return usuarioRepository.save(user);
   }
 
@@ -106,6 +115,58 @@ public class AuthService implements UserDetailsService {
     try {
       return usuarioRepository.existsByEmail(email);
     } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public boolean verifyEmail(String verification_code){
+    UsuarioEntity usuario = usuarioRepository.findByVerificationCode(verification_code);
+    if(usuario != null){
+      usuario.setVerificationCode(null);
+      usuarioRepository.save(usuario);
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  public boolean verifyRecover(String passwordCode){
+    UsuarioEntity usuario = usuarioRepository.findByNewPasswordCode(passwordCode);
+    return usuario != null;
+  }
+
+  public String recover(RecoverRequest recoverRequest){
+    UsuarioEntity usuario = usuarioRepository.findByNewPasswordCode(recoverRequest.getRecoverCode());
+    if(usuario != null){
+      if(recoverRequest.getPassword1().equals(recoverRequest.getPassword2())){
+        String encryptedPassword=DigestUtils.md5Hex(recoverRequest.getPassword1());
+        usuario.setPassword(encryptedPassword);
+        usuario.setNewPasswordCode(null);
+        usuarioRepository.save(usuario);
+        return "";
+      }else{
+        return "Las contraseñas deben ser iguales";
+      }
+    }else{
+      return "El código de recuperación es incorrecto";
+    }
+  }
+
+  public boolean iniciarRecover(String usuario){
+    UsuarioEntity usuarioEntity = usuarioRepository.findByUsername(usuario);
+    if(usuario != null){
+      String code =  RandomHelper.getToken(10);
+      try {
+        emailService.sendCode(usuarioEntity.getEmail(), code);
+        usuarioEntity.setNewPasswordCode(code);
+        usuarioRepository.save(usuarioEntity);
+        return true;
+      } catch (MessagingException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        return false;
+      }
+    }else{
       return false;
     }
   }

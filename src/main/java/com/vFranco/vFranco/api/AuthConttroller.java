@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vFranco.vFranco.request.LoginRequest;
+import com.vFranco.vFranco.request.RecoverRequest;
 import com.vFranco.vFranco.request.RegisterRequest;
 import com.vFranco.vFranco.entity.UsuarioEntity;
+import com.vFranco.vFranco.helper.RandomHelper;
 import com.vFranco.vFranco.provider.JwtProvider;
 import com.vFranco.vFranco.service.AuthService;
 import com.vFranco.vFranco.service.EmailService;
@@ -71,7 +73,8 @@ public class AuthConttroller {
             if(authService.existByEmail(registerRequest.getEmail())){
                 return ResponseEntity.badRequest().body("email is already taken");
               }
-            UsuarioEntity usuarioEntity = authService.register(registerRequest);
+            String verification_code = RandomHelper.getToken(10);
+            UsuarioEntity usuarioEntity = authService.register(registerRequest, verification_code);
             GrantedAuthority authority = new SimpleGrantedAuthority(usuarioEntity.getAuthority().getNombre());
             List<GrantedAuthority> authorities = Collections.singletonList((GrantedAuthority) authority);
             String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(usuarioEntity.getUsername(), usuarioEntity.getPassword(), authorities));
@@ -79,7 +82,7 @@ public class AuthConttroller {
             // Enviar correo electrónico de confirmación
                 emailService.sendHtmlEmail(
                 usuarioEntity.getEmail(), 
-                usuarioEntity.getToken()
+                usuarioEntity.getVerificationCode()
                );
             return ResponseEntity.ok(usuarioEntity);
             
@@ -91,8 +94,22 @@ public class AuthConttroller {
     }
 
     @GetMapping("/verifyMail")
-    public ResponseEntity<Boolean> verifyMail(@RequestParam("token") String token){
-        boolean isValid =jwtProvider.validatejwt(token);
-        return ResponseEntity.ok(isValid);
+    public ResponseEntity<Boolean> verifyMail(@RequestParam("verification_code") String verification_code){
+        return ResponseEntity.ok(authService.verifyEmail(verification_code));
+    }
+
+    @GetMapping("/verifyRecover")
+    public ResponseEntity<Boolean> verifyRecover(@RequestParam("passworCode") String passworCode){
+        return ResponseEntity.ok(authService.verifyRecover(passworCode));
+    }
+
+    @GetMapping("/iniciarRecover")
+    public ResponseEntity<Boolean> iniciarRecover(@RequestParam("usuario") String usuario){
+        return ResponseEntity.ok(authService.iniciarRecover(usuario));
+    }
+
+    @PostMapping("/recover")
+    public ResponseEntity<String> recover(@RequestBody RecoverRequest recoverRequest){   
+        return ResponseEntity.ok(authService.recover(recoverRequest));
     }
 }

@@ -17,15 +17,31 @@ public class EmailService {
       MimeMessage message = mailSender.createMimeMessage();
       
      /*  System.out.print(token); */
-      message.setFrom(new InternetAddress("sender@example.com"));
+      message.setFrom(new InternetAddress("vFranco@gmail.com"));
       message.setRecipients(MimeMessage.RecipientType.TO, email);
       message.setSubject("Verification Email");
   
       String htmlContent = "<h1>This is the verification email</h1>" +
-                           "<p>Click localhost:4200/verification/"+ token +" to verify</p>";
+                           "<p>Copy the link localhost:4200/registro/"+ token +" to verify</p>";
      /*  System.out.print(htmlContent); */
       message.setContent(htmlContent, "text/html; charset=utf-8");
   
       mailSender.send(message);
   }
+
+  public void sendCode(String email, String token) throws MessagingException {
+    MimeMessage message = mailSender.createMimeMessage();
+    
+   /*  System.out.print(token); */
+    message.setFrom(new InternetAddress("vFranco@gmail.com"));
+    message.setRecipients(MimeMessage.RecipientType.TO, email);
+    message.setSubject("Verification Email");
+
+    String htmlContent = "<h1>This is the recover password </h1>" +
+                         "<p>Copy the link localhost:4200/recuperacion/"+ token +" to recover the password</p>";
+   /*  System.out.print(htmlContent); */
+    message.setContent(htmlContent, "text/html; charset=utf-8");
+
+    mailSender.send(message);
+}
 }
