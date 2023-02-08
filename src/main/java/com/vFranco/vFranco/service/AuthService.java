@@ -124,9 +124,9 @@ public class AuthService implements UserDetailsService {
     if(usuario != null){
       usuario.setVerificationCode(null);
       usuarioRepository.save(usuario);
-      return true;
+      throw new RuntimeException("Codigo de verificación Enviado");
     }else{
-      return false;
+      throw new RuntimeException("Email incorrecto");
     }
   }
 
