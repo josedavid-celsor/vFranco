@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,6 +30,8 @@ public class UsuarioEntity {
     private String dni;
 
     @Column(name = "nombre")
+    @NotNull(message = "The name cannot be null")
+    @Size(min=2, max=30, message = "The name have to be between 2 and 30 characters")
     private String nombre;
 
     @Column(name = "apellido")

@@ -64,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/Auth/**").permitAll()
             .antMatchers("/Producto/files/**").permitAll()
             .antMatchers("/Producto/filtros").permitAll()
+            .antMatchers("/Subtipo/TipoProducto/codigo/**").permitAll()
             .anyRequest().authenticated()
             .and().cors().and() 
             .apply(jwtConfigurer);

@@ -52,10 +52,13 @@ public class AuthService implements UserDetailsService {
     // Para encriptar el password
     String encryptedPassword=DigestUtils.md5Hex(loginRequest.getPassword());
     if (usuario == null) {
-      throw new RuntimeException("Usuario no encontrado");
+      throw new RuntimeException("User not found");
     }
     if (!usuario.getPassword().equals(encryptedPassword)) {
-      throw new RuntimeException("Contraseña incorrecta");
+      throw new RuntimeException("Password incorrect");
+    }
+    if(usuario.getVerificationCode() != null){
+      throw new RuntimeException("You have to verify you account first, check your email");
     }
     UserDetails userDetails = loadUserByUsername(loginRequest.getUsername());
     String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
@@ -124,7 +127,7 @@ public class AuthService implements UserDetailsService {
     if(usuario != null){
       usuario.setVerificationCode(null);
       usuarioRepository.save(usuario);
-      throw new RuntimeException("Codigo de verificación Enviado");
+      return true;
     }else{
       throw new RuntimeException("Email incorrecto");
     }
@@ -145,10 +148,10 @@ public class AuthService implements UserDetailsService {
         usuarioRepository.save(usuario);
         return "";
       }else{
-        return "Las contraseñas deben ser iguales";
+        throw new RuntimeException("Las contraseñas deben ser iguales");
       }
     }else{
-      return "El código de recuperación es incorrecto";
+      throw new RuntimeException("El código de recuperación es incorrecto");
     }
   }
 
@@ -163,11 +166,10 @@ public class AuthService implements UserDetailsService {
         return true;
       } catch (MessagingException e) {
         // TODO Auto-generated catch block
-        e.printStackTrace();
-        return false;
+        throw new RuntimeException("Ha habido un problema en el servidor intentelo más tarde");
       }
     }else{
-      return false;
+      throw new RuntimeException("No se ha encontrado el usuario a recuperar");
     }
   }
 }

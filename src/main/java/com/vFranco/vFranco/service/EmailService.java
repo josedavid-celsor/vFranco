@@ -17,7 +17,7 @@ public class EmailService {
       MimeMessage message = mailSender.createMimeMessage();
       
      /*  System.out.print(token); */
-      message.setFrom(new InternetAddress("vFranco@gmail.com"));
+      message.setFrom(new InternetAddress("josedavid_celsor@outlook.es"));
       message.setRecipients(MimeMessage.RecipientType.TO, email);
       message.setSubject("Verification Email");
   
@@ -33,7 +33,7 @@ public class EmailService {
     MimeMessage message = mailSender.createMimeMessage();
     
    /*  System.out.print(token); */
-    message.setFrom(new InternetAddress("vFranco@gmail.com"));
+    message.setFrom(new InternetAddress("josedavid_celsor@outlook.es"));
     message.setRecipients(MimeMessage.RecipientType.TO, email);
     message.setSubject("Verification Email");
 
