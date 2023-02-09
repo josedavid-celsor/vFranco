@@ -57,7 +57,7 @@ public class AuthService implements UserDetailsService {
     if (!usuario.getPassword().equals(encryptedPassword)) {
       throw new RuntimeException("Password incorrect");
     }
-    if(usuario.getVerificationCode() != null){
+    if(usuario.getVerificationCode() != null || !usuario.getVerificationCode().isEmpty() ||  !usuario.getVerificationCode().trim().isEmpty()){
       throw new RuntimeException("You have to verify you account first, check your email");
     }
     UserDetails userDetails = loadUserByUsername(loginRequest.getUsername());
