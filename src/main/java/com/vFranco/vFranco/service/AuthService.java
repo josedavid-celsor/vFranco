@@ -127,9 +127,10 @@ public class AuthService implements UserDetailsService {
   }
 
   public boolean verifyEmail(String verification_code){
+    System.out.print("ESTOY DENTRO DE VERIFY EMAIL");
     UsuarioEntity usuario = usuarioRepository.findByVerificationCode(verification_code);
     if(usuario != null){
-      usuario.setVerificationCode("");
+      usuario.setVerificationCode(null);
       usuarioRepository.save(usuario);
       return true;
     }else{
