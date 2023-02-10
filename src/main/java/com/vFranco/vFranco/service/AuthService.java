@@ -59,8 +59,10 @@ public class AuthService implements UserDetailsService {
       throw new RuntimeException("Password incorrect");
     }
     System.out.println(usuario.getVerificationCode().length());
-    if(usuario.getVerificationCode() != null || !usuario.getVerificationCode().isEmpty() ||  !usuario.getVerificationCode().trim().isEmpty()){
-      throw new RuntimeException("You have to verify you account first, check your email");
+    if(usuario.getVerificationCode() != null ){
+      if(usuario.getVerificationCode().length() > 0){
+        throw new RuntimeException("You have to verify you account first, check your email");
+      }
     }
     UserDetails userDetails = loadUserByUsername(loginRequest.getUsername());
     String token = jwtProvider.generateJwt(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
