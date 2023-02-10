@@ -22,7 +22,7 @@ public class EmailService {
       message.setSubject("Verification Email");
   
       String htmlContent = "<h1>This is the verification email</h1>" +
-                           "<p>Copy the link vfranco.netlify.app/registro" + token +" to verify</p>";
+                           "<p>Copy the link vfranco.netlify.app/registro/" + token +" to verify</p>";
      /*  System.out.print(htmlContent); */
       message.setContent(htmlContent, "text/html; charset=utf-8");
   

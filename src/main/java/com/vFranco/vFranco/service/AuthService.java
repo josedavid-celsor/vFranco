@@ -48,8 +48,6 @@ public class AuthService implements UserDetailsService {
 
   public UsuarioEntity login(LoginRequest loginRequest) {
     UsuarioEntity usuario = usuarioRepository.findByUsername(loginRequest.getUsername());
-    System.out.print("EJECUTO ENTRADA METODO LOGIN");
-    System.out.println("------------------------------------------");
     // Para encriptar el password
     String encryptedPassword=DigestUtils.md5Hex(loginRequest.getPassword());
     if (usuario == null) {
@@ -58,7 +56,6 @@ public class AuthService implements UserDetailsService {
     if (!usuario.getPassword().equals(encryptedPassword)) {
       throw new RuntimeException("Password incorrect");
     }
-    System.out.println(usuario.getVerificationCode().length());
     if(usuario.getVerificationCode() != null ){
       if(usuario.getVerificationCode().length() > 0){
         throw new RuntimeException("You have to verify you account first, check your email");
