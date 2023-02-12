@@ -1,8 +1,6 @@
 package com.vFranco.vFranco.api;
 
 
-import java.util.logging.Logger;
-
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import com.vFranco.vFranco.request.LoginRequest;
 import com.vFranco.vFranco.request.RecoverRequest;
 import com.vFranco.vFranco.request.RegisterRequest;
 import com.vFranco.vFranco.entity.UsuarioEntity;
-import com.vFranco.vFranco.exception.ValidationException;
 import com.vFranco.vFranco.helper.RandomHelper;
 import com.vFranco.vFranco.provider.JwtProvider;
 import com.vFranco.vFranco.service.AuthService;
@@ -34,8 +31,6 @@ public class AuthConttroller {
 
     @Autowired
     private AuthService authService;
-
-    private static final Logger logger = Logger.getLogger(AuthConttroller.class.getName());
 
     @Autowired
     private JwtProvider jwtProvider;
