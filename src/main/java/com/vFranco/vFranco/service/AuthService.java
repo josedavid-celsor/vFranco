@@ -51,14 +51,14 @@ public class AuthService implements UserDetailsService {
     // Para encriptar el password
     String encryptedPassword=DigestUtils.md5Hex(loginRequest.getPassword());
     if (usuario == null) {
-      throw new RuntimeException("User not found");
+      throw new RuntimeException("Usuario no encontrado");
     }
     if (!usuario.getPassword().equals(encryptedPassword)) {
-      throw new RuntimeException("Password incorrect");
+      throw new RuntimeException("Password incorrecto");
     }
     if(usuario.getVerificationCode() != null ){
       if(usuario.getVerificationCode().length() > 0){
-        throw new RuntimeException("You have to verify you account first, check your email");
+        throw new RuntimeException("Debe verificar su cuenta, revise su correo");
       }
     }
     UserDetails userDetails = loadUserByUsername(loginRequest.getUsername());
@@ -124,7 +124,6 @@ public class AuthService implements UserDetailsService {
   }
 
   public boolean verifyEmail(String verification_code){
-    System.out.print("ESTOY DENTRO DE VERIFY EMAIL");
     UsuarioEntity usuario = usuarioRepository.findByVerificationCode(verification_code);
     if(usuario != null){
       usuario.setVerificationCode("");
