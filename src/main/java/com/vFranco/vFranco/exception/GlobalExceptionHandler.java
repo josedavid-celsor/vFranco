@@ -10,8 +10,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex) {
-        System.out.println(ex.getMessage());
-        System.out.println(ex.getCause());
         ErrorResponse error = new ErrorResponse("Internito Servilito Accio", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }

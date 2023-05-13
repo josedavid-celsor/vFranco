@@ -34,10 +34,7 @@ package com.vFranco.vFranco.helper;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Random;
-import java.time.ZoneId;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomHelper {
@@ -66,7 +63,7 @@ public class RandomHelper {
         return ThreadLocalRandom.current().nextInt(minValue, maxValue);
     }
 
-    public static LocalDateTime getRadomDateTime() {
+  /*   public static LocalDateTime getRadomDateTime() {
         return RandomHelper.getRadomDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
@@ -78,7 +75,7 @@ public class RandomHelper {
         gc.set(gc.DAY_OF_YEAR, dayOfYear);
         Date date = new Date(gc.getTimeInMillis());
         return date;
-    }
+    } */
 
     public static LocalDateTime getRadomDate2() {
         int randomSeconds = new Random().nextInt(3600 * 24);

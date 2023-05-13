@@ -60,10 +60,10 @@ public class AuthConttroller {
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) throws MessagingException {
             if (authService.existByUsername(registerRequest.getUsername())) {
 
-                throw new RuntimeException("username is already taken");
+                throw new RuntimeException("Su username ya existe");
             }
             if (authService.existByEmail(registerRequest.getEmail())) {
-                throw new RuntimeException("email is already taken");
+                throw new RuntimeException("El correo ya existe");
             }
             String verification_code = RandomHelper.getToken(10);
             UsuarioEntity usuarioEntity = authService.register(registerRequest, verification_code);

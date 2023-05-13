@@ -26,7 +26,7 @@ public class FilesStorageService {
             Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
-                throw new RuntimeException("A file of that name already exists.");
+                throw new RuntimeException("Nombre de archivo duplicado.");
             }
 
             throw new RuntimeException(e.getMessage());
@@ -42,7 +42,7 @@ public class FilesStorageService {
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                throw new RuntimeException("Could not read the file!");
+                throw new RuntimeException("No se ha podido leer el archivo!");
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
@@ -64,7 +64,7 @@ public class FilesStorageService {
         try {
             return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
         } catch (IOException e) {
-            throw new RuntimeException("Could not load the files!");
+            throw new RuntimeException("No se han podido cargar los archivos!");
         }
     }
 }
