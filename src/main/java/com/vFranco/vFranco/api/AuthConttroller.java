@@ -28,7 +28,7 @@ import com.vFranco.vFranco.service.EmailService;
 @Controller
 @RequestMapping("/Auth")
 public class AuthConttroller {
-
+    ///
     @Autowired
     private AuthService authService;
 
